@@ -1,6 +1,4 @@
-[float]
 = rubygem-asciidoctor: Asciidoctor RPM package spec
-:version: 0.0.8
 
 This repository hosts the RPM package spec file for the https://github.com/erebor/asciidoctor[Asciidoctor] library. The package is named `rubygem-asciidoctor`.
 
@@ -37,8 +35,7 @@ You'll also need to create all the required folders:
 
 Next, grab the Asciidoctor gem (the sources) and put it into the `$HOME/rpmbuild/SOURCES` directory:
 
-[subs="attributes"]
- wget -O $HOME/rpmbuild/SOURCES/asciidoctor-{version}.gem http://rubygems.org/gems/asciidoctor-{version}.gem
+ wget -O $HOME/rpmbuild/SOURCES/asciidoctor-0.0.8.gem http://rubygems.org/gems/asciidoctor-0.0.8.gem
 
 Finally, copy the `.patch` files from this repository to the same directory:
 
@@ -58,8 +55,7 @@ If all goes well, both the binary and source RPMs will emerge in the `$HOME/rpmb
 
 There's nothing special about installing this RPM. I recommend using `yum` because it will install any dependencies that the package requires (though you should already have them if you built the RPM).
 
-[subs="attributes"]
- yum localinstall $HOME/rpmbuild/RPMS/noarch/rubygem-asciidoctor-{version}.rpm
+ yum localinstall $HOME/rpmbuild/RPMS/noarch/rubygem-asciidoctor-0.0.8.rpm
 
 Now, it's time to start using Asciidoctor!
 
@@ -67,12 +63,11 @@ Now, it's time to start using Asciidoctor!
 
 Create a file named asciidoctor-test.rb and populate it with the following code:
 
-----
-require 'asciidoctor'
+  require 'asciidoctor'
 
-content = "= My First Document\n\nRender me some **HTML**!"
-puts Asciidoctor::Document.new(content.lines.entries).render
-----
+  content = "= My First Document\n\nRender me some **HTML**!"
+
+  puts Asciidoctor::Document.new(content.lines.entries).render
 
 Now execute the file with Ruby:
 
