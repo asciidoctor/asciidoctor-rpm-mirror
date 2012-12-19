@@ -1,0 +1,13 @@
+diff --git a/test/test_helper.rb b/test/test_helper.rb
+index a6577e8..b9cad90 100644
+--- a/test/test_helper.rb
++++ b/test/test_helper.rb
+@@ -3,7 +3,7 @@ require 'test/unit'
+ 
+ require "#{File.expand_path(File.dirname(__FILE__))}/../lib/asciidoctor.rb"
+ 
+-require 'mocha/setup'
++require 'mocha'
+ require 'htmlentities'
+ require 'nokogiri'
+ require 'pending'

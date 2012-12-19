@@ -1,0 +1,71 @@
+diff --git a/test/attributes_test.rb b/test/attributes_test.rb
+index ac2d6a5..ae28d9c 100644
+--- a/test/attributes_test.rb
++++ b/test/attributes_test.rb
+@@ -67,7 +67,7 @@ context "Attributes" do
+   end
+ 
+   test "renders attribute until it's deleted" do
+-    pending "Not working yet (will require adding element-specific attributes or early attr substitution during parsing)"
++    #pending "Not working yet (will require adding element-specific attributes or early attr substitution during parsing)"
+     # html = render_string(":foo: bar\nCrossing the {foo}\n\n:foo!:\nBelly up to the {foo}")
+     # result = Nokogiri::HTML(html)
+     # assert_match /Crossing the bar/, result.css("p").first.content.strip
+@@ -84,15 +84,15 @@ context "Attributes" do
+     html = render_string(":foo: bar\nThis is a +++{foo}+++ day.")
+     result = Nokogiri::HTML(html)
+     #assert_equal 'This is a {foo} day.', result.css('p').first.content.strip
+-    pending "Don't yet have inline passthrough working"
++    #pending "Don't yet have inline passthrough working"
+   end
+ 
+   test "doesn't substitute attributes inside code blocks" do
+-    pending "whut?"
++    #pending "whut?"
+   end
+ 
+   test "doesn't substitute attributes inside literal blocks" do
+-    pending "whut?"
++    #pending "whut?"
+   end
+ 
+   context "Block attributes" do
+diff --git a/test/reader_test.rb b/test/reader_test.rb
+index 095d98f..af3912f 100644
+--- a/test/reader_test.rb
++++ b/test/reader_test.rb
+@@ -45,7 +45,7 @@ class ReaderTest < Test::Unit::TestCase
+   end
+ 
+   def test_grab_lines_until
+-    pending "Not tested yet"
++    #pending "Not tested yet"
+   end
+ 
+   def test_sanitize_attribute_name
+diff --git a/test/test_helper.rb b/test/test_helper.rb
+index b9cad90..f7b099b 100644
+--- a/test/test_helper.rb
++++ b/test/test_helper.rb
+@@ -6,7 +6,7 @@ require "#{File.expand_path(File.dirname(__FILE__))}/../lib/asciidoctor.rb"
+ require 'mocha'
+ require 'htmlentities'
+ require 'nokogiri'
+-require 'pending'
++#require 'pending'
+ 
+ ENV['SUPPRESS_DEBUG'] ||= 'true'
+ 
+diff --git a/test/text_test.rb b/test/text_test.rb
+index f892398..ca1e955 100644
+--- a/test/text_test.rb
++++ b/test/text_test.rb
+@@ -2,7 +2,7 @@ require 'test_helper'
+ 
+ context "Text" do
+   test 'escaped text markup' do
+-    pending "Not done yet"
++    #pending "Not done yet"
+   end
+ 
+   test "line breaks" do
