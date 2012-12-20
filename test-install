@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+
+# A sanity check to ensure that gem is functional after installing the package.
+
+require 'asciidoctor'
+
+puts Asciidoctor::Document.new("= Asciidoctor\n\nI'm **alive**!".lines.entries).render
