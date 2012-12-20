@@ -41,59 +41,56 @@ BuildArch: noarch
 Documentation for %{name}
 
 %prep
-%setup -q -c -T
-mkdir -p .%{gem_dir}
-gem install --local --install-dir .%{gem_dir} \
-            --bindir .%{_bindir} \
-            --force %{SOURCE0}
-%patch0 -p1 -d .%{gem_instdir}
-%patch1 -p1 -d .%{gem_instdir}
+gem unpack -V %{SOURCE0}
+%setup -q -D -T -n %{gem_name}-%{version}
+%patch0 -p1
+%patch1 -p1
 
 %build
-# TODO
-#cd .%{gem_instdir}
-#rdoc --charset=UTF-8
-#cd -
+rdoc -o rdoc --charset=UTF-8
 
 %check
-echo %{gem_spec}
-LANG=en_US.utf8 testrb2 -b .%{gem_instdir} -Ilib test
+LANG=en_US.utf8 testrb2 -Ilib test
 
 %install
-mkdir -p %{buildroot}%{gem_dir}
-cp -a .%{gem_dir}/* \
-        %{buildroot}%{gem_dir}/
+mkdir -p %{buildroot}%{gem_instdir}
+cp -a lib \
+        %{buildroot}%{gem_instdir}/
 
-mkdir -p %{buildroot}%{_bindir}
-cp -a .%{_bindir}/* \
-        %{buildroot}%{_bindir}/
+cp -a {LICENSE,README.asciidoc} \
+        %{buildroot}%{gem_instdir}/
 
-find %{buildroot}%{gem_instdir}/bin -type f | xargs chmod a+x
+# Reenable when binary actually functions
+#mkdir -p %{buildroot}%{_bindir}
+#cp -a bin/* \
+#        %{buildroot}%{_bindir}/
+#find %{buildroot}/usr/bin -type f | xargs chmod a+x
 
-# TODO
-#mkdir -p %{buildroot}%{gem_docdir}
-#cp -a .%{gem_instdir}/doc/* \
-#         %{buildroot}%{gem_docdir}/
+#mkdir -p %{buildroot}%{gem_spec}/..
+mkdir -p %{buildroot}%{gem_dir}/specifications
+cp -a *.gemspec %{buildroot}%{gem_spec}
+
+#mkdir -p %{buildroot}%{gem_cache}/..
+mkdir -p %{buildroot}%{gem_dir}/cache
+cp -a %{SOURCE0} %{buildroot}%{gem_cache}
+
+mkdir -p %{buildroot}%{gem_docdir}/rdoc
+cp -a rdoc/* \
+         %{buildroot}%{gem_docdir}/rdoc
 
 %files
 %dir %{gem_instdir}
-%{_bindir}/asciidoctor
-%{gem_instdir}/bin
+%{gem_instdir}/LICENSE
+%{gem_instdir}/README.asciidoc
 %{gem_libdir}
-%exclude %{gem_cache}
-%exclude %{gem_instdir}/Rakefile
-%exclude %{gem_instdir}/test
-%exclude %{gem_instdir}/noof.rb
-%exclude %{gem_instdir}/%{gem_name}.gemspec
-# following exclude is necessary if you have rubygems-bundler installed
-%exclude /usr/share/gems/bin/ruby_noexec_wrapper
+%{gem_cache}
 %{gem_spec}
+# Reenable when binary actually functions
+#%{_bindir}/asciidoctor
+#%{gem_instdir}/bin
 
 %files doc
-# TODO
-#%doc %{gem_docdir}
-%doc %{gem_instdir}/LICENSE
-%doc %{gem_instdir}/README.asciidoc
+%doc %{gem_docdir}
 
 %changelog
 * Wed Dec 19 2012 Dan Allen <dan.j.allen@gmail.com> - 0.0.8-1
