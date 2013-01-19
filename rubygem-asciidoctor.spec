@@ -9,6 +9,9 @@ Group: Development/Languages
 License: MIT
 URL: http://github.com/erebor/asciidoctor
 Source0: http://rubygems.org/gems/%{gem_name}-%{version}.gem
+# Patch0: disables use of pending statement in the test suite The required gem,
+# pending, is not packaged in Fedora and since the statement is merely a task
+# note, it's safe to disable it's usage for the purpose of packaging.
 Patch0: asciidoctor-disable-use-of-pending.patch
 Requires: ruby(abi) = %{rubyabi}
 Requires: ruby(rubygems)
@@ -79,10 +82,10 @@ cp -a rdoc/* \
 
 %files
 %dir %{gem_instdir}
+%exclude %{gem_cache}
 %{gem_instdir}/LICENSE
 %{gem_instdir}/README.asciidoc
 %{gem_libdir}
-%{gem_cache}
 %{gem_spec}
 # Reenable when binary actually functions
 #%{_bindir}/asciidoctor

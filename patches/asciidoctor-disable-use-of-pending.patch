@@ -1,3 +1,6 @@
+# disables use of pending statement in the test suite The required gem,
+# pending, is not packaged in Fedora and since the statement is merely a task
+# note, it's safe to disable it's usage for the purpose of packaging.
 diff --git a/test/attributes_test.rb b/test/attributes_test.rb
 index 3e15eac..b683667 100644
 --- a/test/attributes_test.rb
