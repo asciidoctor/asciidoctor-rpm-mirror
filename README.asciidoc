@@ -35,7 +35,7 @@ You'll also need to create all the required folders:
 
 Next, grab the Asciidoctor gem (the sources) and put it into the `$HOME/rpmbuild/SOURCES` directory:
 
- wget -O $HOME/rpmbuild/SOURCES/asciidoctor-0.0.8.gem http://rubygems.org/gems/asciidoctor-0.0.8.gem
+ wget -O $HOME/rpmbuild/SOURCES/asciidoctor-0.0.9.gem http://rubygems.org/gems/asciidoctor-0.0.9.gem
 
 Finally, copy the `.patch` files from this repository to the same directory:
 
@@ -55,7 +55,7 @@ If all goes well, both the binary and source RPMs will emerge in the `$HOME/rpmb
 
 There's nothing special about installing this RPM. I recommend using `yum` because it will install any dependencies that the package requires (though you should already have them if you built the RPM).
 
- yum localinstall $HOME/rpmbuild/RPMS/noarch/rubygem-asciidoctor-0.0.8.rpm
+ yum localinstall $HOME/rpmbuild/RPMS/noarch/rubygem-asciidoctor-0.0.9.rpm
 
 Now, it's time to start using Asciidoctor!
 

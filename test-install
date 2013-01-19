@@ -4,4 +4,4 @@
 
 require 'asciidoctor'
 
-puts Asciidoctor::Document.new("= Asciidoctor\n\nI'm **alive**!".lines.entries).render
+puts Asciidoctor::Document.new("= Asciidoctor\n\nI'm **alive**!".lines.entries, :compact => true).render
