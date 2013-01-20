@@ -23,6 +23,7 @@ BuildRequires: rubygem(coderay)
 BuildRequires: rubygem(erubis)
 BuildRequires: rubygem(htmlentities)
 BuildRequires: rubygem(mocha)
+BuildRequires: rubygem(minitest)
 BuildRequires: rubygem(nokogiri)
 # using patch to comment lines where pending is used
 #BuildRequires: rubygem(pending)
@@ -46,50 +47,50 @@ Documentation for %{name}
 %prep
 gem unpack -V %{SOURCE0}
 %setup -q -D -T -n %{gem_name}-%{version}
+gem spec %{SOURCE0} -l --ruby > %{gem_name}.gemspec
 %patch0 -p1
 
 %build
-rdoc -o rdoc --charset=UTF-8
+mkdir -p .%{gem_dir}
+
+gem build %{gem_name}.gemspec
+
+gem install -V \
+  --local \
+  --install-dir .%{gem_dir} \
+  --bindir .%{_bindir} \
+  --force \
+  --rdoc \
+  %{gem_name}-%{version}.gem
 
 %check
-LANG=en_US.utf8 testrb2 -Ilib test
+LANG=en_US.utf8 testrb -Ilib test/*_test.rb
 
 %install
 mkdir -p %{buildroot}%{gem_instdir}
-cp -a lib \
-        %{buildroot}%{gem_instdir}/
+cp -a .%{gem_instdir}/{LICENSE,README.asciidoc} %{buildroot}%{gem_instdir}/
 
-cp -a {LICENSE,README.asciidoc} \
-        %{buildroot}%{gem_instdir}/
+mkdir -p %{buildroot}%{gem_libdir}
+cp -a .%{gem_libdir}/* %{buildroot}%{gem_libdir}
+
+mkdir -p %{buildroot}%{gem_docdir}
+cp -a .%{gem_docdir}/* %{buildroot}%{gem_docdir}
+
+mkdir -p %{buildroot}%{gem_dir}/specifications
+cp -a .%{gem_spec} %{buildroot}%{gem_spec}
 
 # Reenable when binary actually functions
 #mkdir -p %{buildroot}%{_bindir}
-#cp -a bin/* \
-#        %{buildroot}%{_bindir}/
-#find %{buildroot}/usr/bin -type f | xargs chmod a+x
-
-#mkdir -p %{buildroot}%{gem_spec}/..
-mkdir -p %{buildroot}%{gem_dir}/specifications
-cp -a *.gemspec %{buildroot}%{gem_spec}
-
-#mkdir -p %{buildroot}%{gem_cache}/..
-mkdir -p %{buildroot}%{gem_dir}/cache
-cp -a %{SOURCE0} %{buildroot}%{gem_cache}
-
-mkdir -p %{buildroot}%{gem_docdir}/rdoc
-cp -a rdoc/* \
-         %{buildroot}%{gem_docdir}/rdoc
+#cp -a ./%{_bindir}/* %{buildroot}%{_bindir}
 
 %files
 %dir %{gem_instdir}
-%exclude %{gem_cache}
 %{gem_instdir}/LICENSE
 %{gem_instdir}/README.asciidoc
 %{gem_libdir}
 %{gem_spec}
 # Reenable when binary actually functions
 #%{_bindir}/asciidoctor
-#%{gem_instdir}/bin
 
 %files doc
 %doc %{gem_docdir}
