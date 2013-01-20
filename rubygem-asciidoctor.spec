@@ -79,18 +79,16 @@ cp -a .%{gem_docdir}/* %{buildroot}%{gem_docdir}
 mkdir -p %{buildroot}%{gem_dir}/specifications
 cp -a .%{gem_spec} %{buildroot}%{gem_spec}
 
-# Reenable when binary actually functions
-#mkdir -p %{buildroot}%{_bindir}
-#cp -a ./%{_bindir}/* %{buildroot}%{_bindir}
+mkdir -p %{buildroot}%{_bindir}
+cp -a ./%{_bindir}/* %{buildroot}%{_bindir}
 
 %files
 %dir %{gem_instdir}
 %{gem_instdir}/LICENSE
 %{gem_instdir}/README.asciidoc
 %{gem_libdir}
+%{_bindir}/asciidoctor
 %{gem_spec}
-# Reenable when binary actually functions
-#%{_bindir}/asciidoctor
 
 %files doc
 %doc %{gem_docdir}
