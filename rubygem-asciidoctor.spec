@@ -7,7 +7,7 @@ Version: 0.0.9
 Release: 1%{?dist}
 Group: Development/Languages
 License: MIT
-URL: http://github.com/erebor/asciidoctor
+URL: http://github.com/asciidoctor/asciidoctor
 Source0: http://rubygems.org/gems/%{gem_name}-%{version}.gem
 # Patch0: disables use of pending statement in the test suite The required gem,
 # pending, is not packaged in Fedora and since the statement is merely a task
