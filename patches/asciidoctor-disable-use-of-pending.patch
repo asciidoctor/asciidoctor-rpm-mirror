@@ -1,19 +1,6 @@
 # disables use of pending statement in the test suite The required gem,
 # pending, is not packaged in Fedora and since the statement is merely a task
 # note, it's safe to disable it's usage for the purpose of packaging.
-diff --git a/test/attributes_test.rb b/test/attributes_test.rb
-index 3e15eac..b683667 100644
---- a/test/attributes_test.rb
-+++ b/test/attributes_test.rb
-@@ -177,7 +177,7 @@ To use {gem_name}, the first thing to do is to import it in your Ruby source fil
-     end
- 
-     test 'renders attribute until it is deleted' do
--      pending 'This requires that we consume attributes as the document is being lexed, not up front'
-+      #pending 'This requires that we consume attributes as the document is being lexed, not up front'
-       #output = render_string(":foo: bar\n\nCrossing the {foo}\n\n:foo!:\nBelly up to the {foo}")
-       # result = Nokogiri::HTML(html)
-       # assert_match /Crossing the bar/, result.css("p").first.content.strip
 diff --git a/test/test_helper.rb b/test/test_helper.rb
 index 3b27218..964ff59 100644
 --- a/test/test_helper.rb
