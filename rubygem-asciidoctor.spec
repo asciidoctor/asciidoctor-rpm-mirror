@@ -1,5 +1,4 @@
 %global gem_name asciidoctor
-%global rubyabi 1.9.1
 
 Summary: AsciiDoc implementation in Ruby
 Name: rubygem-%{gem_name}
@@ -15,12 +14,9 @@ Source0: http://rubygems.org/gems/%{gem_name}-%{version}.gem
 Patch0: asciidoctor-disable-use-of-pending.patch
 # Patch1: works around nth-child selector bug in Nokogiri
 Patch1: asciidoctor-fix-nth-child-selectors.patch
-Requires: ruby(abi) = %{rubyabi}
 Requires: ruby(rubygems)
-Requires: ruby
-BuildRequires: ruby(abi) = %{rubyabi}
 BuildRequires: rubygems-devel
-BuildRequires: ruby
+BuildRequires: ruby(rubygems)
 BuildRequires: rubygem(coderay)
 BuildRequires: rubygem(erubis)
 BuildRequires: rubygem(htmlentities)
