@@ -3,7 +3,7 @@
 
 Summary: AsciiDoc implementation in Ruby
 Name: rubygem-%{gem_name}
-Version: 0.0.9
+Version: 0.1.1
 Release: 1%{?dist}
 Group: Development/Languages
 License: MIT
@@ -94,5 +94,5 @@ cp -a ./%{_bindir}/* %{buildroot}%{_bindir}
 %doc %{gem_docdir}
 
 %changelog
-* Wed Jan 20 2013 Dan Allen <dan.j.allen@gmail.com> - 0.0.9-1
+* Fri Mar 01 2013 Dan Allen <dan.j.allen@gmail.com> - 0.1.1-1
 - Initial package
