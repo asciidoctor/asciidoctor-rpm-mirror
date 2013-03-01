@@ -8,16 +8,16 @@ This RPM spec was developed for Fedora (17 or better), but may be useful for oth
 
 == Preparing your environment
 
-You first need to install the packages necessary to build the RPM. Begin by installing the `@fedora-packager` group.
+You first need to install the packages necessary to build the RPM. Begin by installing the `@fedora-packager` group (as root or using sudo):
 
- yum install @fedora-packager
+ yum install @fedora-packager wget
 
 Next, clone this repository and switch to it:
 
  git clone git://github.com/mojavelinux/rubygem-asciidoctor.git 
  cd rubygem-asciidoctor
 
-Finally, install the packages that this build requires:
+Finally, install the packages that this build requires (as root or using sudo):
 
  yum-builddep rubygem-asciidoctor.spec
 
@@ -35,11 +35,11 @@ You'll also need to create all the required folders:
 
 Next, grab the Asciidoctor gem (the sources) and put it into the `$HOME/rpmbuild/SOURCES` directory:
 
- wget -O $HOME/rpmbuild/SOURCES/asciidoctor-0.0.9.gem http://rubygems.org/gems/asciidoctor-0.0.9.gem
+ wget -O $HOME/rpmbuild/SOURCES/asciidoctor-0.1.1.gem http://rubygems.org/gems/asciidoctor-0.1.1.gem
 
 Finally, copy the `.patch` files from this repository to the same directory:
 
- cp *.patch $HOME/rpmbuild/SOURCES/
+ cp patches/* $HOME/rpmbuild/SOURCES/
 
 You're now ready to build the RPM.
 
@@ -55,7 +55,7 @@ If all goes well, both the binary and source RPMs will emerge in the `$HOME/rpmb
 
 There's nothing special about installing this RPM. I recommend using `yum` because it will install any dependencies that the package requires (though you should already have them if you built the RPM).
 
- yum localinstall $HOME/rpmbuild/RPMS/noarch/rubygem-asciidoctor-0.0.9.rpm
+ yum localinstall $HOME/rpmbuild/RPMS/noarch/rubygem-asciidoctor-0.1.1.rpm
 
 Now, it's time to start using Asciidoctor!
 
@@ -63,13 +63,9 @@ Now, it's time to start using Asciidoctor!
 
 Create a file named asciidoctor-test.rb and populate it with the following code:
 
-// combine these lines once GitHub's AsciiDoc rendering is fixed (again)
-
   require 'asciidoctor'
-
   content = "= My First Document\n\nRender me some **HTML**!"
-
-  puts Asciidoctor::Document.new(content.lines.entries).render
+  puts Asciidoctor.render(content, :header_footer => true, :compact => true)
 
 Now execute the file with Ruby:
 
