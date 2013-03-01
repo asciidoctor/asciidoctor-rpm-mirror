@@ -1,4 +1,5 @@
 %global gem_name asciidoctor
+%global mandir %{_mandir}/man1
 
 Summary: AsciiDoc implementation in Ruby
 Name: rubygem-%{gem_name}
@@ -29,9 +30,9 @@ BuildArch: noarch
 Provides: rubygem(%{gem_name}) = %{version}
 
 %description
-A pure AsciiDoc implementation in Ruby that can parse AsciiDoc files or strings
-and render them as HTML, DocBook and other output formats using Tilt-supported
-templates.
+A pure AsciiDoc implementation in Ruby for parsing AsciiDoc source files and
+strings and then rendering them as HTML, DocBook or other formats using the
+built-in ERB templates or a set of custom Tilt-supported template files.
 
 %package doc
 Summary: Documentation for %{name}
@@ -66,27 +67,32 @@ gem install -V \
 LANG=en_US.utf8 testrb -Ilib test/*_test.rb
 
 %install
-mkdir -p %{buildroot}%{gem_instdir}
-cp -a .%{gem_instdir}/{LICENSE,README.asciidoc} %{buildroot}%{gem_instdir}/
-
-mkdir -p %{buildroot}%{gem_libdir}
-cp -a .%{gem_libdir}/* %{buildroot}%{gem_libdir}
-
-mkdir -p %{buildroot}%{gem_docdir}
-cp -a .%{gem_docdir}/* %{buildroot}%{gem_docdir}
-
-mkdir -p %{buildroot}%{gem_dir}/specifications
-cp -a .%{gem_spec} %{buildroot}%{gem_spec}
+mkdir -p %{buildroot}%{gem_dir}
+cp -pa .%{gem_dir}/* \
+        %{buildroot}%{gem_dir}/
 
 mkdir -p %{buildroot}%{_bindir}
-cp -a ./%{_bindir}/* %{buildroot}%{_bindir}
+cp -pa .%{_bindir}/* \
+        %{buildroot}%{_bindir}/
+
+mkdir -p %{buildroot}%{mandir}
+cp -pa .%{gem_instdir}/man/*.1 \
+        %{buildroot}%{mandir}/
 
 %files
 %dir %{gem_instdir}
+%exclude %{gem_cache}
+%exclude %{gem_instdir}/%{gem_name}.gemspec
+%exclude %{gem_instdir}/Gemfile
+%exclude %{gem_instdir}/Rakefile
+%exclude %{gem_instdir}/test
+%exclude %{gem_instdir}/man
 %{gem_instdir}/LICENSE
-%{gem_instdir}/README.asciidoc
+%{gem_instdir}/README.*
+%{_bindir}/*
+%{gem_instdir}/bin
 %{gem_libdir}
-%{_bindir}/asciidoctor
+%{mandir}/*
 %{gem_spec}
 
 %files doc
