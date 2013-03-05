@@ -15,7 +15,13 @@ Source0: http://rubygems.org/gems/%{gem_name}-%{version}.gem
 Patch0: asciidoctor-disable-use-of-pending.patch
 # Patch1: works around nth-child selector bug in Nokogiri
 Patch1: asciidoctor-fix-nth-child-selectors.patch
+%if 0%{?fedora} <= 18
+Requires: ruby(abi) = 1.9.1
+BuildRequires: ruby(abi) = 1.9.1
+%else
 Requires: ruby(release)
+BuildRequires: ruby(release)
+%endif
 Requires: ruby(rubygems)
 BuildRequires: rubygems-devel
 BuildRequires: ruby(rubygems)
@@ -52,10 +58,10 @@ gem spec %{SOURCE0} -l --ruby > %{gem_name}.gemspec
 %patch1 -p1
 
 %build
-mkdir -p .%{gem_dir}
-
 gem build %{gem_name}.gemspec
 
+%if 0%{?fedora} <= 18
+mkdir -p .%{gem_dir}
 gem install -V \
   --local \
   --install-dir .%{gem_dir} \
@@ -63,6 +69,9 @@ gem install -V \
   --force \
   --rdoc \
   %{gem_name}-%{version}.gem
+%else
+%gem_install
+%endif
 
 %check
 LANG=en_US.utf8 testrb -Ilib test/*_test.rb
