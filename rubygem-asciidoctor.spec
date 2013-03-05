@@ -15,6 +15,7 @@ Source0: http://rubygems.org/gems/%{gem_name}-%{version}.gem
 Patch0: asciidoctor-disable-use-of-pending.patch
 # Patch1: works around nth-child selector bug in Nokogiri
 Patch1: asciidoctor-fix-nth-child-selectors.patch
+Requires: ruby(release)
 Requires: ruby(rubygems)
 BuildRequires: rubygems-devel
 BuildRequires: ruby(rubygems)
