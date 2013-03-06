@@ -1,6 +1,6 @@
 = rubygem-asciidoctor: Asciidoctor RPM package spec
 
-This repository hosts the RPM package spec file for the https://github.com/erebor/asciidoctor[Asciidoctor] library. The package is named `rubygem-asciidoctor`.
+This repository hosts the RPM package spec file for the https://github.com/asciidoctor/asciidoctor[Asciidoctor] library. The package is named `rubygem-asciidoctor`.
 
 == Prerequisites
 
