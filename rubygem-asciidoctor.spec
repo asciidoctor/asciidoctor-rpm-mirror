@@ -59,19 +59,7 @@ gem spec %{SOURCE0} -l --ruby > %{gem_name}.gemspec
 
 %build
 gem build %{gem_name}.gemspec
-
-%if 0%{?fedora} < 18
-mkdir -p .%{gem_dir}
-gem install -V \
-  --local \
-  --install-dir .%{gem_dir} \
-  --bindir .%{_bindir} \
-  --force \
-  --rdoc \
-  %{gem_name}-%{version}.gem
-%else
 %gem_install
-%endif
 
 %check
 LANG=en_US.utf8 testrb -Ilib test/*_test.rb
