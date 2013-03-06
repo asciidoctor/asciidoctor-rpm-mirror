@@ -60,7 +60,7 @@ gem spec %{SOURCE0} -l --ruby > %{gem_name}.gemspec
 %build
 gem build %{gem_name}.gemspec
 
-%if 0%{?fedora} <= 18
+%if 0%{?fedora} < 18
 mkdir -p .%{gem_dir}
 gem install -V \
   --local \
