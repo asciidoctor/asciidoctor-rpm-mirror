@@ -39,7 +39,7 @@ Next, grab the Asciidoctor gem (the sources) and put it into the `$HOME/rpmbuild
 
 Finally, copy the `.patch` files from this repository to the same directory:
 
- cp patches/* $HOME/rpmbuild/SOURCES/
+ cp *.patch $HOME/rpmbuild/SOURCES/
 
 You're now ready to build the RPM.
 
