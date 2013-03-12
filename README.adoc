@@ -91,8 +91,10 @@ This command will download and install the asciidoctor package.
 
 === Test the Asciidoctor package: +rubygem-asciidoctor+
 
+First, let's test using Asciidoctor as a Ruby library.
+
 . On your computer, create a new file and name it +asciidoctor-test.rb+ 
-. Copy and paste the following code into the file.
+. Copy and paste the following code into the file:
 
   require 'asciidoctor'
   content = "= My First Document\n\nRender me some **HTML**!"
@@ -135,10 +137,35 @@ You should see this output in your terminal.
 
 . You can render the output as HTML using:
 
- ruby asciidoctor-test.rb > test.html
+ ruby asciidoctor-test.rb > asciidoctor-test.html
 
 . Open your browser to see the result.
-. Or, if you're using Gnome, type:
+. Alternatively, if you're using Gnome, type:
+
+ gnome-open asciidoctor-test.html
++
+A new tab should open in your current browser session.
+
+Now let's test using the Asciidoctor executable.
+
+. On your computer, create a new file and name it +test.ad+ 
+. Copy and paste the following markup into the file:
+
+ = My Second Document
+ Your Name
+
+ AsciiDoc is _rockin'_ docs.
+
+. Save the file
+. In a terminal, navigate to the directory where you saved +test.ad+ and type the following command to run it through the Asciidoctor processor:
+
+ asciidoctor test.ad
++
+You shouldn't see any output in your terminal.
+That's because it writes the output to the file +test.html+.
+
+. Open your browser to see the result.
+. Alternatively, if you're using Gnome, type:
 
  gnome-open test.html
 +
@@ -152,7 +179,7 @@ A new tab should open in your current browser session.
 
 . Once fedora-easy-karma is installed, run it in the terminal.
 
- fedora-easy-karma --fas-username yourFASaccount *asciidoctor
+ fedora-easy-karma --fas-username <yourFASaccount> *asciidoctor
 +
 To be on the safe side, include the flag for your FAS account when you start fedora-easy-karma.
 Once fedora-easy-karma runs, you will not be able to switch accounts.
