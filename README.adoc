@@ -1,12 +1,18 @@
 = rubygem-asciidoctor: Asciidoctor RPM package spec
+Dan Allen
+:idprefix:
 
-This repository hosts the RPM package spec file for the https://github.com/asciidoctor/asciidoctor[Asciidoctor] library. The package is named `rubygem-asciidoctor`.
+This repository is the official host of the build materials to create the Fedora RPM package for the https://github.com/asciidoctor/asciidoctor[Asciidoctor] RubyGem.
+The package is named +rubygem-asciidoctor+.
 
-== Prerequisites
+While this RPM spec was developed specifically for Fedora 17 and above, it may be useful for other RPM-based systems.
 
-This RPM spec was developed for Fedora 17 and above, but may be useful for other RPM-based systems.
+== Build the Asciidoctor RPM
 
-== Preparing your environment
+If you want to build the RPM on your own machine, follow the instructions in this section.
+If you want to test a pre-built package, skip to the next section on <<test-the-asciidoctor-rpm-and-report-feedback,testing the RPM>>.
+
+=== Preparing your environment
 
 You first need to install the packages necessary to build the RPM. Begin by installing the `@fedora-packager` group (as root or using sudo):
 
@@ -23,9 +29,10 @@ Finally, install the packages that this build requires (as root or using sudo):
 
 Next, we need to put the package source and patches in place.
 
-== Preparing the sources
+=== Preparing the sources
 
-You can build RPMs as a non-privileged user, though you need to prepare the directories first. Let's use the directory rpmbuild in our `$HOME` directory:
+You can build RPMs as a non-privileged user, though you need to prepare the directories first.
+Let's use the directory rpmbuild in our `$HOME` directory:
 
  echo "%_topdir %(echo $HOME)/rpmbuild" > $HOME/.rpmmacros
 
@@ -43,7 +50,7 @@ Finally, copy the `.patch` files from this repository to the same directory:
 
 You're now ready to build the RPM.
 
-== Building the RPM
+=== Building the RPM
 
 With everything in place, building the RPM is easy!
 
@@ -51,17 +58,19 @@ With everything in place, building the RPM is easy!
 
 If all goes well, both the binary and source RPMs will emerge in the `$HOME/rpmbuild/RPMS/noarch` and `$HOME/rpmbuild/SRPMS` directories, respectively.
 
-== Installing the RPM
+=== Installing the RPM
 
-There's nothing special about installing this RPM. I recommend using `yum` because it will install any dependencies that the package requires (though you should already have them if you built the RPM).
+There's nothing special about installing this RPM.
+I recommend using `yum` because it will install any dependencies that the package requires (though you should already have them if you built the RPM).
 
  yum localinstall $HOME/rpmbuild/RPMS/noarch/rubygem-asciidoctor-0.1.1.rpm
 
 Now, it's time to start using Asciidoctor!
 
-== Testing the asciidoctor package and reporting feedback
+== Test the Asciidoctor RPM and report feedback
 
-Before the asciidoctor package can be included in the Fedora distribution, it must be tested by users and receive karma via the http://admin.fedoraproject.org/updates/[Bohdi system]. One way to do this is to use http://admin.fedoraproject.org/pkgdb/acls/name/fedora-easy-karma[fedora-easy-karma].
+Before the Asciidoctor package (+rubygem-asciidoctor+) can be included in the Fedora distribution, it must be tested by users and receive karma via the http://admin.fedoraproject.org/updates/[Bohdi system].
+One way to provide this feedback is to use the http://admin.fedoraproject.org/pkgdb/acls/name/fedora-easy-karma[fedora-easy-karma] tool.
 
 === Enable the updates-testing repository temporarily
 
@@ -71,7 +80,7 @@ In a terminal, type:
 
 This command will download and install the asciidoctor package.
 
-=== Test the asciidoctor package
+=== Test the Asciidoctor package: +rubygem-asciidoctor+
 
 . On your computer, create a new file and name it `asciidoctor-test.rb` 
 . Copy and paste the following code into the file.
@@ -129,21 +138,25 @@ A new tab should open in your current browser session.
 
 . If you don't have fedora-easy-karma installed on your computer, type the following command in a terminal.
 
- sudo yum --enablerepo=updates-testing install fedora-easy-karma
+ sudo yum install fedora-easy-karma
 
 . Once fedora-easy-karma is installed, run it in the terminal.
 
  fedora-easy-karma --fas-username yourFASaccount *asciidoctor
 +
-To be on the safe side, include the flag for your FAS account when you start fedora-easy-karma. Once fedora-easy-karma runs, you will not be able to switch accounts.
+To be on the safe side, include the flag for your FAS account when you start fedora-easy-karma.
+Once fedora-easy-karma runs, you will not be able to switch accounts.
++
 NOTE: It may take fedora-easy-karma several minutes to fetch the list of packages in updates-testing.
 +
 When fedora-easy-karma finds `rubygem-asciidoctor`, it will display a summary of the package and prompt you to give -1 (negative), 0 (neutral), or 1 (postive) karma to the package. For more information about providing karma for packages and how to comment on packages, review the http://fedoraproject.org/wiki/QA:Update_feedback_guidelines[Fedora feedback guidelines].
 
 . Enter your karma rating.
-. Next, you will be asked to provide additional, detailed feedback. Please comment whether the package worked as expected and you successfully used it, if you think you may have encountered an error, but aren't sure, or if you definitely encountered a bug.
+. Next, you will be asked to provide additional, detailed feedback.
+  Please comment whether the package worked as expected and you successfully used it, if you think you may have encountered an error, but aren't sure, or if you definitely encountered a bug.
 . When prompted, enter your FAS password.
 . W00t! The feedback process is complete.
+. You can verify your feedback was recorded by visiting the https://admin.fedoraproject.org/updates/[Bodhi updates page].
 
 
 
