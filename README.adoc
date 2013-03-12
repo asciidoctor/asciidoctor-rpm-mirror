@@ -59,20 +59,93 @@ There's nothing special about installing this RPM. I recommend using `yum` becau
 
 Now, it's time to start using Asciidoctor!
 
-== Basic Asciidoctor usage
+== Testing the asciidoctor package and reporting feedback
 
-Create a file named asciidoctor-test.rb and populate it with the following code:
+Before the asciidoctor package can be included in the Fedora distribution, it must be tested by users and receive karma via the http://admin.fedoraproject.org/updates/[Bohdi system]. One way to do this is to use http://admin.fedoraproject.org/pkgdb/acls/name/fedora-easy-karma[fedora-easy-karma].
+
+=== Enable the updates-testing repository temporarily
+
+In a terminal, type:
+
+ sudo yum install rubygem-asciidoctor --enablerepo=updates-testing
+
+This command will download and install the asciidoctor package.
+
+=== Test the asciidoctor package
+
+. On your computer, create a new file and name it `asciidoctor-test.rb` 
+. Copy and paste the following code into the file.
 
   require 'asciidoctor'
   content = "= My First Document\n\nRender me some **HTML**!"
   puts Asciidoctor.render(content, :header_footer => true, :compact => true)
 
-Now execute the file with Ruby:
+. Save the file.
+. In a terminal, navigate to the directory where you saved `asciidoctor-test.rb` and type the following command to execute the file with Ruby:
 
  ruby asciidoctor-test.rb
++
+You should see this output in your terminal.
 
-You should see the HTML output to your terminal. You can update your script to write it to a file, or just redirect the output:
+ <!DOCTYPE html>
+ <html lang="en">
+   <head>
+     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+     <meta name="generator" content="Asciidoctor 0.1.1">
+     <title>My First Document</title>
+   </head>
+   <body class="article">
+     <div id="header">
+       <h1>My First Document</h1>
+     </div>
+     <div id="content">
+ <div id="preamble">
+   <div class="sectionbody">
+ <div class="paragraph">
+   <p>Render me some <strong>HTML</strong>!</p>
+ </div>
+   </div>
+ </div>
+     </div>
+     <div id="footer">
+       <div id="footer-text">
+         Last updated 2013-03-12 10:43:15 MDT
+       </div>
+     </div>
+   </body>
+ </html>
+
+. You can render the output as HTML using:
 
  ruby asciidoctor-test.rb > test.html
 
-Open up your browser to see the result!
+. Open your browser to see the result. Or, if you're using Gnome, type:
+
+ gnome-open test.html
++
+A new tab should open in your current browser session.
+
+=== Provide feedback with fedora-easy-karma
+
+. If you don't have fedora-easy-karma installed on your computer, type the following command in a terminal.
+
+ sudo yum --enablerepo=updates-testing install fedora-easy-karma
+
+. Once fedora-easy-karma is installed, run it in the terminal.
+
+ fedora-easy-karma --fas-username yourFASaccount *asciidoctor
++
+To be on the safe side, include the flag for your FAS account when you start fedora-easy-karma. Once fedora-easy-karma runs, you will not be able to switch accounts.
+NOTE: It may take fedora-easy-karma several minutes to fetch the list of packages in updates-testing.
++
+When fedora-easy-karma finds `rubygem-asciidoctor`, it will display a summary of the package and prompt you to give -1 (negative), 0 (neutral), or 1 (postive) karma to the package. For more information about providing karma for packages and how to comment on packages, review the http://fedoraproject.org/wiki/QA:Update_feedback_guidelines[Fedora feedback guidelines].
+
+. Enter your karma rating.
+. Next, you will be asked to provide additional, detailed feedback. Please comment whether the package worked as expected and you successfully used it, if you think you may have encountered an error, but aren't sure, or if you definitely encountered a bug.
+. When prompted, enter your FAS password.
+. W00t! The feedback process is complete.
+
+
+
+
+
