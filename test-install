@@ -4,4 +4,12 @@
 
 require 'asciidoctor'
 
-puts Asciidoctor.render("= Asciidoctor\n\nI'm **alive**!", :header_footer => true, :compact => true)
+source = <<EOS
+= Asciidoctor
+Author Name
+
+http://asciidoctor.org[Asciidoctor] is an _open source_ implementation of
+http://asciidoc.org[AsciiDoc] in [red]*Ruby*.
+EOS
+
+puts Asciidoctor.render(source, :backend => :html5, :header_footer => true, :compact => true, :safe => :safe, :attributes => 'linkcss!')
