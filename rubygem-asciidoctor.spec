@@ -14,7 +14,7 @@ Source0: http://rubygems.org/gems/%{gem_name}-%{version}.gem
 # note, it's safe to disable it's usage for the purpose of packaging.
 Patch0: asciidoctor-disable-use-of-pending.patch
 %if 0%{?rhel} || 0%{?fedora} > 18
-%if 0%{?rhel} < 6
+%if 0%{?rhel} < 7
 Requires: ruby(abi) = 1.8
 BuildRequires: ruby(abi) = 1.8
 %else
