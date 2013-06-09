@@ -13,11 +13,12 @@ Source0: http://rubygems.org/gems/%{gem_name}-%{version}.gem
 # pending, is not packaged in Fedora and since the statement is merely a task
 # note, it's safe to disable it's usage for the purpose of packaging.
 Patch0: asciidoctor-disable-use-of-pending.patch
+# Patch1: disables CodeRay tests since the library is not available in el6
+Patch1: asciidoctor-disable-coderay-tests.patch
 Requires: ruby(abi) = 1.8
 BuildRequires: ruby(abi) = 1.8
 Requires: ruby(rubygems)
 BuildRequires: ruby(rubygems)
-BuildRequires: rubygem(coderay)
 BuildRequires: rubygem(erubis)
 BuildRequires: rubygem(minitest)
 BuildRequires: rubygem(nokogiri)
@@ -44,6 +45,7 @@ gem unpack -V %{SOURCE0}
 %setup -q -D -T -n %{gem_name}-%{version}
 gem spec %{SOURCE0} -l --ruby > %{gem_name}.gemspec
 %patch0 -p1
+%patch1 -p1
 
 %build
 gem build %{gem_name}.gemspec

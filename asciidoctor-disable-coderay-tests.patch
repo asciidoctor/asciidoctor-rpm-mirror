@@ -1,0 +1,21 @@
+# disables the CodeRay tests since the library is not available in el6
+diff --git a/test/blocks_test.rb b/test/blocks_test.rb
+index a98a9fe..6ff1388 100644
+--- a/test/blocks_test.rb
++++ b/test/blocks_test.rb
+@@ -1426,6 +1426,7 @@ alert("Hello, World!")
+       assert_css '.listingblock pre code.javascript', output, 1
+     end
+ 
++=begin
+     test 'should highlight source if source-highlighter attribute is coderay' do
+       input = <<-EOS
+ :source-highlighter: coderay
+@@ -1458,6 +1459,7 @@ html = CodeRay.scan("puts 'Hello, world!'", :ruby).div(:line_numbers => :table)
+       assert_xpath '//pre[@class="CodeRay"]/code[@class="ruby language-ruby"]//span[@style = "color:#036;font-weight:bold"][text() = "CodeRay"]', output, 1
+       assert_no_match(/\.CodeRay \{/, output)
+     end
++=end
+ 
+     test 'should include remote highlight.js assets if source-highlighter attribute is highlightjs' do
+       input = <<-EOS
