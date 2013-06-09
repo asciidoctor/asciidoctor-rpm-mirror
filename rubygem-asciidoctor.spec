@@ -16,7 +16,6 @@ Patch0: asciidoctor-disable-use-of-pending.patch
 Requires: ruby(abi) = 1.8
 BuildRequires: ruby(abi) = 1.8
 Requires: ruby(rubygems)
-BuildRequires: rubygems-devel
 BuildRequires: ruby(rubygems)
 BuildRequires: rubygem(coderay)
 BuildRequires: rubygem(erubis)
