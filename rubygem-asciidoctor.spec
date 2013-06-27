@@ -93,7 +93,6 @@ cp -pa .%{geminstdir}/compat/* \
 %{geminstdir}/README.*
 %{_bindir}/*
 %{geminstdir}/bin
-%{gemdir}/bin
 %{geminstdir}/lib
 %{mandir}/*
 %{_sysconfdir}/%{gemname}/*
@@ -104,6 +103,8 @@ cp -pa .%{geminstdir}/compat/* \
 %doc %{geminstdir}/LICENSE
 
 %changelog
+* Thu Jun 27 2013 Jimmi Dyson <jimmidyson@gmail.com> - 0.1.3-1
+- Fix packaging for EL6
 * Sat Jun 08 2013 Dan Allen <dan.j.allen@gmail.com> - 0.1.3-1
 - Update to Asciidoctor 0.1.3
 * Fri Mar 01 2013 Dan Allen <dan.j.allen@gmail.com> - 0.1.1-1
