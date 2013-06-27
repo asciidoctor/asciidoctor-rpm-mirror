@@ -1,29 +1,34 @@
-%global gem_name asciidoctor
+%global gemname asciidoctor
+
+%global gemdir %(ruby -rubygems -e 'puts Gem::dir' 2>/dev/null)
+%global geminstdir %{gemdir}/gems/%{gemname}-%{version}
 %global mandir %{_mandir}/man1
+%global rubyabi 1.8
 
 Summary: AsciiDoc implementation in Ruby
-Name: rubygem-%{gem_name}
+Name: rubygem-%{gemname}
 Version: 0.1.3
 Release: 1%{?dist}
 Group: Development/Languages
 License: MIT
 URL: http://github.com/asciidoctor/asciidoctor
-Source0: http://rubygems.org/gems/%{gem_name}-%{version}.gem
+Source0: http://rubygems.org/gems/%{gemname}-%{version}.gem
 # Patch0: disables use of pending statement in the test suite The required gem,
 # pending, is not packaged in Fedora and since the statement is merely a task
 # note, it's safe to disable it's usage for the purpose of packaging.
 Patch0: asciidoctor-disable-use-of-pending.patch
 # Patch1: disables CodeRay tests since the library is not available in el6
 Patch1: asciidoctor-disable-coderay-tests.patch
-Requires: ruby(abi) = 1.8
-BuildRequires: ruby(abi) = 1.8
+Requires: ruby(abi) = %{rubyabi}
 Requires: ruby(rubygems)
+BuildRequires: ruby 
+BuildRequires: ruby(abi) = %{rubyabi}
 BuildRequires: ruby(rubygems)
 BuildRequires: rubygem(erubis)
 BuildRequires: rubygem(minitest)
 BuildRequires: rubygem(nokogiri)
 BuildArch: noarch
-Provides: rubygem(%{gem_name}) = %{version}
+Provides: rubygem(%{gemname}) = %{version}
 
 %description
 An open source text processor and publishing toolchain written in Ruby for
@@ -42,58 +47,64 @@ Documentation for %{name}
 
 %prep
 gem unpack -V %{SOURCE0}
-%setup -q -D -T -n %{gem_name}-%{version}
-gem spec %{SOURCE0} -l --ruby > %{gem_name}.gemspec
+%setup -q -D -T -n %{gemname}-%{version}
+gem spec %{SOURCE0} -l --ruby > %{gemname}.gemspec
 %patch0 -p1
 %patch1 -p1
+gem build %{gemname}.gemspec
+mkdir -p .%{gemdir}
+gem install --local --install-dir .%{gemdir} \
+            --bindir .%{_bindir} \
+            --force %{SOURCE0}
 
 %build
-gem build %{gem_name}.gemspec
-%gem_install
 
 %check
 LANG=en_US.utf8 testrb -Ilib test/*_test.rb
 
 %install
-mkdir -p %{buildroot}%{gem_dir}
-cp -pa .%{gem_dir}/* \
-        %{buildroot}%{gem_dir}/
+mkdir -p %{buildroot}%{gemdir}
+cp -pa .%{gemdir}/* \
+        %{buildroot}%{gemdir}/
 
 mkdir -p %{buildroot}%{_bindir}
 cp -pa .%{_bindir}/* \
         %{buildroot}%{_bindir}/
 
 mkdir -p %{buildroot}%{mandir}
-cp -pa .%{gem_instdir}/man/*.1 \
+cp -pa .%{geminstdir}/man/*.1 \
         %{buildroot}%{mandir}/
 
-mkdir -p %{buildroot}%{_sysconfdir}/%{gem_name}
-cp -pa .%{gem_instdir}/compat/* \
-        %{buildroot}%{_sysconfdir}/%{gem_name}/
+mkdir -p %{buildroot}%{_sysconfdir}/%{gemname}
+cp -pa .%{geminstdir}/compat/* \
+        %{buildroot}%{_sysconfdir}/%{gemname}/
 
 %files
-%dir %{gem_instdir}
-%exclude %{gem_cache}
-%exclude %{gem_instdir}/%{gem_name}.gemspec
-%exclude %{gem_instdir}/Gemfile
-%exclude %{gem_instdir}/Guardfile
-%exclude %{gem_instdir}/Rakefile
-%exclude %{gem_instdir}/compat
-%exclude %{gem_instdir}/man
-%exclude %{gem_instdir}/test
-%{gem_instdir}/LICENSE
-%{gem_instdir}/README.*
+%dir %{geminstdir}
+%exclude %{gemdir}/cache/%{gemname}-%{version}.gem
+%exclude %{geminstdir}/%{gemname}.gemspec
+%exclude %{geminstdir}/Gemfile
+%exclude %{geminstdir}/Guardfile
+%exclude %{geminstdir}/Rakefile
+%exclude %{geminstdir}/compat
+%exclude %{geminstdir}/man
+%exclude %{geminstdir}/test
+%{geminstdir}/LICENSE
+%{geminstdir}/README.*
 %{_bindir}/*
-%{gem_instdir}/bin
-%{gem_libdir}
+%{geminstdir}/bin
+%{geminstdir}/lib
 %{mandir}/*
-%{_sysconfdir}/%{gem_name}/*
-%{gem_spec}
+%{_sysconfdir}/%{gemname}/*
+%{gemdir}/specifications/%{gemname}-%{version}.gemspec
 
 %files doc
-%doc %{gem_docdir}
+%doc %{gemdir}/doc/%{gemname}-%{version}
+%doc %{geminstdir}/LICENSE
 
 %changelog
+* Thu Jun 27 2013 Jimmi Dyson <jimmidyson@gmail.com> - 0.1.3-1
+- Fix packaging for EL6
 * Sat Jun 08 2013 Dan Allen <dan.j.allen@gmail.com> - 0.1.3-1
 - Update to Asciidoctor 0.1.3
 * Fri Mar 01 2013 Dan Allen <dan.j.allen@gmail.com> - 0.1.1-1
