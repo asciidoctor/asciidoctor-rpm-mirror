@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 # A sanity check to ensure that gem is functional after installing the package.
-
+require 'rubygems'
 require 'asciidoctor'
 
 source = <<EOS
