@@ -8,7 +8,7 @@
 Summary: AsciiDoc implementation in Ruby
 Name: rubygem-%{gemname}
 Version: 0.1.3
-Release: 1%{?dist}
+Release: 2%{?dist}
 Group: Development/Languages
 License: MIT
 URL: http://github.com/asciidoctor/asciidoctor
@@ -103,6 +103,8 @@ cp -pa .%{geminstdir}/compat/* \
 %doc %{geminstdir}/LICENSE
 
 %changelog
+* Fri Jun 28 2013 Dan Allen <dan.j.allen@gmail.com> - 0.1.3-2
+- Rebuild RPM with correct target distribution name
 * Thu Jun 27 2013 Jimmi Dyson <jimmidyson@gmail.com> - 0.1.3-1
 - Fix packaging for EL6
 * Sat Jun 08 2013 Dan Allen <dan.j.allen@gmail.com> - 0.1.3-1
