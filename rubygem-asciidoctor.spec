@@ -4,7 +4,7 @@
 Summary: AsciiDoc implementation in Ruby
 Name: rubygem-%{gem_name}
 Version: 0.1.3
-Release: 1%{?dist}
+Release: 2%{?dist}
 Group: Development/Languages
 License: MIT
 URL: http://github.com/asciidoctor/asciidoctor
@@ -98,6 +98,9 @@ cp -pa .%{gem_instdir}/compat/* \
 %doc %{gem_docdir}
 
 %changelog
+* Sun Aug 04 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.1.3-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_20_Mass_Rebuild
+
 * Sat Jun 08 2013 Dan Allen <dan.j.allen@gmail.com> - 0.1.3-1
 - Update to Asciidoctor 0.1.3
 * Fri Mar 01 2013 Dan Allen <dan.j.allen@gmail.com> - 0.1.1-1
