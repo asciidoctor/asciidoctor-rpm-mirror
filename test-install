@@ -6,10 +6,14 @@ require 'asciidoctor'
 
 source = <<EOS
 = Asciidoctor
-Author Name
+Author Name <author@example.com>
 
 http://asciidoctor.org[Asciidoctor] is an _open source_ implementation of
-http://asciidoc.org[AsciiDoc] in [red]*Ruby*.
+http://asciidoc.org[AsciiDoc] in [.red]*Ruby*.
+
+== Sample section
+
+Sample section content
 EOS
 
-puts Asciidoctor.render(source, :backend => :html5, :header_footer => true, :compact => true, :safe => :safe, :attributes => 'linkcss!')
+puts Asciidoctor.render(source, :backend => :html5, :header_footer => true, :safe => :safe, :attributes => 'idprefix= idseparator=-')
