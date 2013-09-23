@@ -9,7 +9,9 @@ Group: Development/Languages
 License: MIT
 URL: http://github.com/asciidoctor/asciidoctor
 Source0: http://rubygems.org/gems/%{gem_name}-%{version}.gem
-Patch0: asciidoctor-fix-include-uri.patch 
+# Patch0: disable the test for including content from a URI
+# since it does not work when the network is unavailable
+Patch0: asciidoctor-remove-include-uri-test.patch 
 %if 0%{?rhel} > 6 || 0%{?fedora} > 18
 Requires: ruby(release)
 BuildRequires: ruby(release)
