@@ -68,6 +68,13 @@ With everything in place, building the RPM is easy!
 
 If all goes well, both the binary and source RPMs will emerge in the +$HOME/rpmbuild/RPMS/noarch+ and +$HOME/rpmbuild/SRPMS+ directories, respectively.
 
+Alternatively, you can build directly from the SRPM.
+
+ wget -P srpms http://kojipkgs.fedoraproject.org/packages/rubygem-asciidoctor/0.1.4/1.fc19/src/rubygem-asciidoctor-0.1.4-1.fc19.src.rpm
+ rpmbuild --rebuild srpms/rubygem-asciidoctor-0.1.4-1.fc19.src.rpm
+
+The SPRMs are stored with the builds in the http://koji.fedoraproject.org/koji/packageinfo?packageID=15660[koji build system].
+
 === Installing the RPM
 
 There's nothing special about installing this RPM.
