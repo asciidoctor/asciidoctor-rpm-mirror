@@ -9,6 +9,7 @@ Group: Development/Languages
 License: MIT
 URL: http://github.com/asciidoctor/asciidoctor
 Source0: http://rubygems.org/gems/%{gem_name}-%{version}.gem
+Patch0: asciidoctor-fix-include-uri.patch 
 %if 0%{?rhel} > 6 || 0%{?fedora} > 18
 Requires: ruby(release)
 BuildRequires: ruby(release)
@@ -49,6 +50,7 @@ Documentation for %{name}
 gem unpack -V %{SOURCE0}
 %setup -q -D -T -n %{gem_name}-%{version}
 gem spec %{SOURCE0} -l --ruby > %{gem_name}.gemspec
+%patch0 -p1
 
 %build
 gem build %{gem_name}.gemspec
