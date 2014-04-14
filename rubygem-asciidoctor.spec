@@ -24,7 +24,7 @@ BuildRequires: rubygems-devel
 BuildRequires: ruby(rubygems)
 BuildRequires: rubygem(coderay)
 BuildRequires: rubygem(erubis)
-BuildRequires: rubygem(minitest)
+BuildRequires: rubygem(minitest) < 5
 BuildRequires: rubygem(nokogiri)
 BuildRequires: rubygem(tilt)
 BuildRequires: rubygem(haml)
