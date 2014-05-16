@@ -1,36 +1,48 @@
 %global gem_name asciidoctor
 %global mandir %{_mandir}/man1
 
+%define pre .preview.6
+
 Summary: A fast, open source AsciiDoc implementation in Ruby
 Name: rubygem-%{gem_name}
-Version: 0.1.4
-Release: 1%{?dist}
+Version: 1.5.0
+Release: %{?pre:0.}1%{?pre}%{?dist}
 Group: Development/Languages
 License: MIT
-URL: http://github.com/asciidoctor/asciidoctor
-Source0: http://rubygems.org/gems/%{gem_name}-%{version}.gem
+URL: https://github.com/asciidoctor/asciidoctor
+Source0: https://rubygems.org/gems/%{gem_name}-%{version}%{pre}.gem
 # Patch0: disable the test for including content from a URI
 # since it does not work when the network is unavailable
 Patch0: asciidoctor-remove-include-uri-test.patch 
-%if 0%{?rhel} > 6 || 0%{?fedora} > 18
+%if 0%{?fc19} || 0%{?fc20} || 0%{?el7}
 Requires: ruby(release)
 BuildRequires: ruby(release)
-%else
-Requires: ruby(abi) = 1.9.1
-BuildRequires: ruby(abi) = 1.9.1
 %endif
+%if 0%{?el6}
 Requires: ruby(rubygems)
+Requires: ruby(abi) = 1.8
+BuildRequires: ruby(abi) = 1.8
+%endif
 BuildRequires: rubygems-devel
 BuildRequires: ruby(rubygems)
 BuildRequires: rubygem(coderay)
 BuildRequires: rubygem(erubis)
-BuildRequires: rubygem(minitest) < 5
+BuildRequires: rubygem(minitest)
 BuildRequires: rubygem(nokogiri)
 BuildRequires: rubygem(tilt)
 BuildRequires: rubygem(haml)
 BuildRequires: rubygem(slim)
 BuildArch: noarch
+%if 0%{?fc19} || 0%{?fc20} || 0%{?el6} || 0%{?el7}
 Provides: rubygem(%{gem_name}) = %{version}
+%endif
+
+%if %{?pre:1}
+%global gem_instdir %{gem_dir}/gems/%{gem_name}-%{version}%{pre}
+%global gem_cache   %{gem_dir}/cache/%{gem_name}-%{version}%{pre}.gem
+%global gem_spec    %{gem_dir}/specifications/%{gem_name}-%{version}%{pre}.gemspec
+%global gem_docdir  %{gem_dir}/doc/%{gem_name}-%{version}%{pre}
+%endif
 
 %description
 A fast, open source text processor and publishing toolchain, written in Ruby,
@@ -50,16 +62,24 @@ Documentation for %{name}
 
 %prep
 gem unpack -V %{SOURCE0}
-%setup -q -D -T -n %{gem_name}-%{version}
+%setup -q -D -T -n %{gem_name}-%{version}%{pre}
 gem spec %{SOURCE0} -l --ruby > %{gem_name}.gemspec
-%patch0 -p1
+
+# Fix shebang (avoid Requires: /usr/bin/env)
+sed -i -e 's|#!/usr/bin/env ruby|#!/usr/bin/ruby|' \
+  bin/%{gem_name} bin/%{gem_name}-safe
+
+# Clean up development-only file
+rm Rakefile
+sed -i "s|\"Rakefile\",||g" %{gem_name}.gemspec
+#patch0 -p1
 
 %build
 gem build %{gem_name}.gemspec
-%gem_install
+%gem_install -n %{gem_name}-%{version}%{pre}.gem
 
 %check
-LANG=en_US.utf8 testrb -Ilib test/*_test.rb
+LANG=en_US.utf8 ruby -I"lib:test" test/*_test.rb
 
 %install
 mkdir -p %{buildroot}%{gem_dir}
@@ -81,16 +101,14 @@ cp -pa .%{gem_instdir}/compat/* \
 %files
 %dir %{gem_instdir}
 %exclude %{gem_cache}
-%exclude %{gem_instdir}/%{gem_name}.gemspec
-%exclude %{gem_instdir}/Gemfile
-%exclude %{gem_instdir}/Guardfile
-%exclude %{gem_instdir}/Rakefile
 %exclude %{gem_instdir}/compat
 %exclude %{gem_instdir}/man
 %exclude %{gem_instdir}/test
-%{gem_instdir}/CHANGELOG.adoc
-%{gem_instdir}/LICENSE
-%{gem_instdir}/README.*
+%exclude %{gem_instdir}/features
+%doc %{gem_instdir}/CHANGELOG.adoc
+%doc %{gem_instdir}/LICENSE
+%doc %{gem_instdir}/README.*
+%{gem_instdir}/data
 %{_bindir}/*
 %{gem_instdir}/bin
 %{gem_libdir}
@@ -102,6 +120,15 @@ cp -pa .%{gem_instdir}/compat/* \
 %doc %{gem_docdir}
 
 %changelog
+* Thu May 15 2014 Ken Dreyer <ktdreyer@ktdreyer.com> - 1.5.0-0.1.preview.6
+- Update to Asciidoctor 0.1.5.preview.6
+- Use HTTPS URLs
+- Support Minitest 5
+- Adjustments for https://fedoraproject.org/wiki/Changes/Ruby_2.1
+- Mark CHANGELOG, LICENSE, READMEs as %%doc
+- Remove Rakefile in %%prep
+- Remove Requires: /usr/bin/env
+
 * Sun Sep 22 2013 Dan Allen <dan.j.allen@gmail.com> - 0.1.4-1
 - Update to Asciidoctor 0.1.4
 
