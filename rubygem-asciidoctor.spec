@@ -1,19 +1,16 @@
 %global gem_name asciidoctor
 %global mandir %{_mandir}/man1
 
-%define pre .preview.6
+%define pre .preview.7
 
 Summary: A fast, open source AsciiDoc implementation in Ruby
 Name: rubygem-%{gem_name}
 Version: 1.5.0
-Release: %{?pre:0.}1%{?pre}%{?dist}
+Release: %{?pre:0.}2%{?pre}%{?dist}
 Group: Development/Languages
 License: MIT
 URL: https://github.com/asciidoctor/asciidoctor
 Source0: https://rubygems.org/gems/%{gem_name}-%{version}%{pre}.gem
-# Patch0: disable the test for including content from a URI
-# since it does not work when the network is unavailable
-Patch0: asciidoctor-remove-include-uri-test.patch 
 %if 0%{?fc19} || 0%{?fc20} || 0%{?el7}
 Requires: ruby(release)
 BuildRequires: ruby(release)
@@ -72,7 +69,6 @@ sed -i -e 's|#!/usr/bin/env ruby|#!/usr/bin/ruby|' \
 # Clean up development-only file
 rm Rakefile
 sed -i "s|\"Rakefile\",||g" %{gem_name}.gemspec
-#patch0 -p1
 
 %build
 gem build %{gem_name}.gemspec
@@ -120,6 +116,10 @@ cp -pa .%{gem_instdir}/compat/* \
 %doc %{gem_docdir}
 
 %changelog
+* Tue May 20 2014 Ken Dreyer <ktdreyer@ktdreyer.com> - 1.5.0-0.2.preview.7
+- Update to Asciidoctor 0.1.5.preview.7
+- Drop unused patch
+
 * Thu May 15 2014 Ken Dreyer <ktdreyer@ktdreyer.com> - 1.5.0-0.1.preview.6
 - Update to Asciidoctor 0.1.5.preview.6
 - Use HTTPS URLs
