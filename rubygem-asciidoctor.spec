@@ -6,7 +6,7 @@
 Summary: A fast, open source AsciiDoc implementation in Ruby
 Name: rubygem-%{gem_name}
 Version: 1.5.0
-Release: %{?pre:0.}3%{?pre}%{?dist}
+Release: %{?pre:0.}4%{?pre}%{?dist}
 Group: Development/Languages
 License: MIT
 URL: https://github.com/asciidoctor/asciidoctor
@@ -30,7 +30,7 @@ BuildRequires: rubygem(tilt)
 BuildRequires: rubygem(haml)
 BuildRequires: rubygem(slim)
 BuildArch: noarch
-Provides: asciidoctor
+Provides: asciidoctor = %{version}
 %if 0%{?fc19} || 0%{?fc20} || 0%{?el6} || 0%{?el7}
 Provides: rubygem(%{gem_name}) = %{version}
 %endif
@@ -117,6 +117,9 @@ cp -pa .%{gem_instdir}/compat/* \
 %doc %{gem_docdir}
 
 %changelog
+* Fri Jun 06 2014 Ken Dreyer <ktdreyer@ktdreyer.com> - 1.5.0-0.4.preview.7
+- Add %%{version} number to Provides: asciidoctor
+
 * Fri Jun 06 2014 Ken Dreyer <ktdreyer@ktdreyer.com> - 1.5.0-0.3.preview.7
 - Provide: asciidoctor
   https://github.com/asciidoctor/rubygem-asciidoctor-rpm/issues/5
