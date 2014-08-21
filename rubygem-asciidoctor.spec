@@ -1,16 +1,16 @@
 %global gem_name asciidoctor
 %global mandir %{_mandir}/man1
 
-%define pre .preview.7
+%define pre
 
 Summary: A fast, open source AsciiDoc implementation in Ruby
 Name: rubygem-%{gem_name}
 Version: 1.5.0
-Release: %{?pre:0.}4%{?pre}%{?dist}
+Release: 0.5%{?dist}
 Group: Development/Languages
 License: MIT
 URL: https://github.com/asciidoctor/asciidoctor
-Source0: https://rubygems.org/gems/%{gem_name}-%{version}%{pre}.gem
+Source0: https://rubygems.org/gems/%{gem_name}-%{version}.gem
 %if 0%{?fc19} || 0%{?fc20} || 0%{?el7}
 Requires: ruby(release)
 BuildRequires: ruby(release)
@@ -35,12 +35,12 @@ Provides: asciidoctor = %{version}
 Provides: rubygem(%{gem_name}) = %{version}
 %endif
 
-%if %{?pre:1}
-%global gem_instdir %{gem_dir}/gems/%{gem_name}-%{version}%{pre}
-%global gem_cache   %{gem_dir}/cache/%{gem_name}-%{version}%{pre}.gem
-%global gem_spec    %{gem_dir}/specifications/%{gem_name}-%{version}%{pre}.gemspec
-%global gem_docdir  %{gem_dir}/doc/%{gem_name}-%{version}%{pre}
-%endif
+#%if %{?pre:1}
+%global gem_instdir %{gem_dir}/gems/%{gem_name}-%{version}
+%global gem_cache   %{gem_dir}/cache/%{gem_name}-%{version}.gem
+%global gem_spec    %{gem_dir}/specifications/%{gem_name}-%{version}.gemspec
+%global gem_docdir  %{gem_dir}/doc/%{gem_name}-%{version}
+#%endif
 
 %description
 A fast, open source text processor and publishing toolchain, written in Ruby,
@@ -52,7 +52,7 @@ collection of templates written in a template language supported by Tilt.
 %package doc
 Summary: Documentation for %{name}
 Group: Documentation
-Requires: %{name} = %{version}-%{release}
+Requires: %{name} = %{version}
 BuildArch: noarch
 
 %description doc
@@ -60,7 +60,7 @@ Documentation for %{name}
 
 %prep
 gem unpack -V %{SOURCE0}
-%setup -q -D -T -n %{gem_name}-%{version}%{pre}
+%setup -q -D -T -n %{gem_name}-%{version}
 gem spec %{SOURCE0} -l --ruby > %{gem_name}.gemspec
 
 # Fix shebang (avoid Requires: /usr/bin/env)
@@ -73,7 +73,7 @@ sed -i "s|\"Rakefile\",||g" %{gem_name}.gemspec
 
 %build
 gem build %{gem_name}.gemspec
-%gem_install -n %{gem_name}-%{version}%{pre}.gem
+%gem_install -n %{gem_name}-%{version}.gem
 
 %check
 LANG=en_US.utf8 ruby -I"lib:test" test/*_test.rb
@@ -102,8 +102,9 @@ cp -pa .%{gem_instdir}/compat/* \
 %exclude %{gem_instdir}/man
 %exclude %{gem_instdir}/test
 %exclude %{gem_instdir}/features
+%exclude %{gem_instdir}/benchmark
 %doc %{gem_instdir}/CHANGELOG.adoc
-%doc %{gem_instdir}/LICENSE
+%doc %{gem_instdir}/LICENSE.adoc
 %doc %{gem_instdir}/README.*
 %{gem_instdir}/data
 %{_bindir}/*
