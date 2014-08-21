@@ -4,7 +4,7 @@ Dan Allen
 :idseparator: -
 :gem_title: Asciidoctor
 :gem_name: asciidoctor
-:gem_version: 0.1.4
+:gem_version: 1.5.0
 :gem_gem: {gem_name}-{gem_version}.gem
 :gem_url: https://github.com/asciidoctor/asciidoctor
 :rpm_name: rubygem-{gem_name}
@@ -30,7 +30,7 @@ Begin by installing the +@fedora-packager+ group (as root or using sudo):
 
 Next, clone this repository and switch to it:
 
- git clone git://github.com/asciidoctor/rubygem-asciidoctor-rpm.git 
+ git clone git://github.com/asciidoctor/rubygem-asciidoctor-rpm.git
  cd rubygem-asciidoctor-rpm
 
 Finally, install the packages that this build requires (as root or using sudo):
@@ -52,7 +52,7 @@ You'll also need to create all the required folders:
 
 Next, grab the Asciidoctor gem (the sources) and put it into the +$HOME/rpmbuild/SOURCES+ directory:
 
- wget -O $HOME/rpmbuild/SOURCES/asciidoctor-0.1.4.gem http://rubygems.org/gems/asciidoctor-0.1.4.gem
+ wget -O $HOME/rpmbuild/SOURCES/asciidoctor-1.5.0.gem http://rubygems.org/gems/asciidoctor-1.5.0.gem
 
 Finally, copy the +.patch+ files from this repository to the same directory:
 
@@ -80,7 +80,7 @@ The SPRMs are stored with the builds in the http://koji.fedoraproject.org/koji/p
 There's nothing special about installing this RPM.
 I recommend using +yum+ because it will install any dependencies that the package requires (though you should already have them if you built the RPM).
 
- yum localinstall $HOME/rpmbuild/RPMS/noarch/rubygem-asciidoctor-0.1.4.rpm
+ yum localinstall $HOME/rpmbuild/RPMS/noarch/rubygem-asciidoctor-1.5.0.rpm
 
 Now, it's time to start using Asciidoctor!
 
@@ -101,7 +101,7 @@ This command will download and install the asciidoctor package.
 
 First, let's test using Asciidoctor as a Ruby library.
 
-. On your computer, create a new file and name it +asciidoctor-test.rb+ 
+. On your computer, create a new file and name it +asciidoctor-test.rb+
 . Copy and paste the following code into the file:
 
   require 'asciidoctor'
@@ -158,7 +158,7 @@ A new tab should open in your current browser session.
 
 Now let's test using the Asciidoctor executable.
 
-. On your computer, create a new file and name it +test.ad+ 
+. On your computer, create a new file and name it +test.ad+
 . Copy and paste the following markup into the file:
 
  = My Second Document
