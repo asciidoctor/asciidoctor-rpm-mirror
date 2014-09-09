@@ -1,12 +1,12 @@
 %global gem_name asciidoctor
 %global mandir %{_mandir}/man1
 
-%define pre .preview.7
+%define pre %nil
 
 Summary: A fast, open source AsciiDoc implementation in Ruby
 Name: rubygem-%{gem_name}
 Version: 1.5.0
-Release: %{?pre:0.}4%{?pre}%{?dist}
+Release: 1%{?dist}
 Group: Development/Languages
 License: MIT
 URL: https://github.com/asciidoctor/asciidoctor
@@ -98,12 +98,13 @@ cp -pa .%{gem_instdir}/compat/* \
 %files
 %dir %{gem_instdir}
 %exclude %{gem_cache}
+%exclude %{gem_instdir}/benchmark
 %exclude %{gem_instdir}/compat
 %exclude %{gem_instdir}/man
 %exclude %{gem_instdir}/test
 %exclude %{gem_instdir}/features
 %doc %{gem_instdir}/CHANGELOG.adoc
-%doc %{gem_instdir}/LICENSE
+%doc %{gem_instdir}/LICENSE.adoc
 %doc %{gem_instdir}/README.*
 %{gem_instdir}/data
 %{_bindir}/*
@@ -117,6 +118,9 @@ cp -pa .%{gem_instdir}/compat/* \
 %doc %{gem_docdir}
 
 %changelog
+* Tue Sep 09 2014 Ken Dreyer <ktdreyer@ktdreyer.com> - 1.5.0-1
+- Update to Asciidoctor 0.1.5 final
+
 * Fri Jun 06 2014 Ken Dreyer <ktdreyer@ktdreyer.com> - 1.5.0-0.4.preview.7
 - Add %%{version} number to Provides: asciidoctor
 
