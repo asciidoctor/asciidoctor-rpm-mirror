@@ -26,7 +26,7 @@ If you want to test a pre-built package, skip to the next section on <<test-the-
 You first need to install the packages necessary to build the RPM.
 Begin by installing the +@fedora-packager+ group (as root or using sudo):
 
- yum install @fedora-packager wget
+ yum install -y @fedora-packager wget
 
 Next, clone this repository and switch to it:
 
@@ -80,7 +80,7 @@ The SPRMs are stored with the builds in the http://koji.fedoraproject.org/koji/p
 There's nothing special about installing this RPM.
 I recommend using +yum+ because it will install any dependencies that the package requires (though you should already have them if you built the RPM).
 
- yum localinstall $HOME/rpmbuild/RPMS/noarch/rubygem-asciidoctor-0.1.4.rpm
+ yum install -y $HOME/rpmbuild/RPMS/noarch/rubygem-asciidoctor-0.1.4.rpm
 
 Now, it's time to start using Asciidoctor!
 
@@ -93,7 +93,7 @@ One way to provide this feedback is to use the http://admin.fedoraproject.org/pk
 
 In a terminal, type:
 
- sudo yum install rubygem-asciidoctor --enablerepo=updates-testing
+ yum install -y rubygem-asciidoctor --enablerepo=updates-testing
 
 This command will download and install the asciidoctor package.
 
@@ -187,7 +187,7 @@ A new tab should open in your current browser session.
 
 . If you don't have fedora-easy-karma installed on your computer, type the following command in a terminal.
 
- sudo yum install fedora-easy-karma
+ yum install -y fedora-easy-karma
 
 . Once fedora-easy-karma is installed, run it in the terminal.
 
