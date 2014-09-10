@@ -158,18 +158,20 @@ A new tab should open in your current browser session.
 
 Now let's test using the Asciidoctor executable.
 
-. On your computer, create a new file and name it +test.ad+ 
+. On your computer, create a new file and name it [path]_test.ad_
 . Copy and paste the following markup into the file:
++
+```
+= My Second Document
+Your Name
 
- = My Second Document
- Your Name
-
- AsciiDoc is _rockin'_ docs.
+AsciiDoc is _rockin'_ docs.
+```
 
 . Save the file
-. In a terminal, navigate to the directory where you saved +test.ad+ and type the following command to run it through the Asciidoctor processor:
+. In a terminal, navigate to the directory where you saved [path]_test.adoc_ and type the following command to run it through the Asciidoctor processor:
 
- asciidoctor test.ad
+ asciidoctor test.adoc
 +
 You shouldn't see any output in your terminal.
 That's because it writes the output to the file +test.html+.
