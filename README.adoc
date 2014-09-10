@@ -158,7 +158,7 @@ A new tab should open in your current browser session.
 
 Now let's test using the Asciidoctor executable.
 
-. On your computer, create a new file and name it [path]_test.ad_
+. On your computer, create a new file and name it [path]_test.adoc_
 . Copy and paste the following markup into the file:
 +
 ```
