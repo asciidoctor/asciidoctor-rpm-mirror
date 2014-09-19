@@ -5,7 +5,7 @@
 
 Summary: A fast, open source AsciiDoc implementation in Ruby
 Name: rubygem-%{gem_name}
-Version: 1.5.0
+Version: 1.5.1
 Release: 1%{?dist}
 Group: Development/Languages
 License: MIT
@@ -118,6 +118,9 @@ cp -pa .%{gem_instdir}/compat/* \
 %doc %{gem_docdir}
 
 %changelog
+* Fri Sep 19 2014 Ken Dreyer <ktdreyer@ktdreyer.com> - 1.5.1-1
+- Update to Asciidoctor 1.5.1
+
 * Tue Sep 09 2014 Ken Dreyer <ktdreyer@ktdreyer.com> - 1.5.0-1
 - Update to Asciidoctor 1.5.0 final
 
