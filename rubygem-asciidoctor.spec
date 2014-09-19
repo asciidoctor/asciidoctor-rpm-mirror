@@ -119,7 +119,7 @@ cp -pa .%{gem_instdir}/compat/* \
 
 %changelog
 * Tue Sep 09 2014 Ken Dreyer <ktdreyer@ktdreyer.com> - 1.5.0-1
-- Update to Asciidoctor 0.1.5 final
+- Update to Asciidoctor 1.5.0 final
 
 * Fri Jun 06 2014 Ken Dreyer <ktdreyer@ktdreyer.com> - 1.5.0-0.4.preview.7
 - Add %%{version} number to Provides: asciidoctor
