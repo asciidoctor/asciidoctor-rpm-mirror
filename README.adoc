@@ -2,17 +2,18 @@
 Dan Allen
 :idprefix:
 :idseparator: -
+:compat-mode!:
 :gem_title: Asciidoctor
 :gem_name: asciidoctor
-:gem_version: 0.1.4
+:gem_version: 1.5.2
 :gem_gem: {gem_name}-{gem_version}.gem
 :gem_url: https://github.com/asciidoctor/asciidoctor
 :rpm_name: rubygem-{gem_name}
 :rpm_rpm: {rpm_name}-{gem_version}.rpm
 :rpm_repo: git://github.com/asciidoctor/rubygem-asciidoctor-rpm.git
 
-This repository is the official host of the build materials to create the Fedora RPM package for the https://github.com/asciidoctor/asciidoctor[Asciidoctor] RubyGem.
-The RPM package is named +rubygem-asciidoctor+.
+This repository is the official host of the build materials to create the Fedora RPM package for the https://github.com/asciidoctor/asciidoctor[Asciidoctor] Ruby Gem.
+The RPM package is named `rubygem-asciidoctor`.
 
 While this RPM spec was developed specifically for Fedora 18 and above, it may be useful for other RPM-based systems.
 
@@ -24,9 +25,9 @@ If you want to test a pre-built package, skip to the next section on <<test-the-
 === Preparing your environment
 
 You first need to install the packages necessary to build the RPM.
-Begin by installing the +@fedora-packager+ group (as root or using sudo):
+Begin by installing the `@fedora-packager` group (as root or using sudo):
 
- yum install @fedora-packager wget
+ yum install -y @fedora-packager wget
 
 Next, clone this repository and switch to it:
 
@@ -42,7 +43,7 @@ Next, we need to put the package source and patches in place.
 === Preparing the sources
 
 You can build RPMs as a non-privileged user, though you need to prepare the directories first.
-Let's use the directory rpmbuild in our +$HOME+ directory:
+Let's use the directory rpmbuild in our `$HOME` directory:
 
  echo "%_topdir %(echo $HOME)/rpmbuild" > $HOME/.rpmmacros
 
@@ -50,11 +51,11 @@ You'll also need to create all the required folders:
 
  mkdir -p $HOME/rpmbuild/{BUILD,BUILDROOT,RPMS,SOURCES,SPECS,SRPMS}
 
-Next, grab the Asciidoctor gem (the sources) and put it into the +$HOME/rpmbuild/SOURCES+ directory:
+Next, grab the Asciidoctor gem (the sources) and put it into the `$HOME/rpmbuild/SOURCES` directory:
 
- wget -O $HOME/rpmbuild/SOURCES/asciidoctor-0.1.4.gem http://rubygems.org/gems/asciidoctor-0.1.4.gem
+ wget -O $HOME/rpmbuild/SOURCES/asciidoctor-1.5.2.gem http://rubygems.org/gems/asciidoctor-1.5.2.gem
 
-Finally, copy the +.patch+ files from this repository to the same directory:
+Finally, copy the `.patch` files from this repository to the same directory:
 
  cp *.patch $HOME/rpmbuild/SOURCES/
 
@@ -66,84 +67,90 @@ With everything in place, building the RPM is easy!
 
  rpmbuild -ba rubygem-asciidoctor.spec
 
-If all goes well, both the binary and source RPMs will emerge in the +$HOME/rpmbuild/RPMS/noarch+ and +$HOME/rpmbuild/SRPMS+ directories, respectively.
+If all goes well, both the binary and source RPMs will emerge in the `$HOME/rpmbuild/RPMS/noarch` and `$HOME/rpmbuild/SRPMS` directories, respectively.
 
 Alternatively, you can build directly from the SRPM.
 
- wget -P srpms http://kojipkgs.fedoraproject.org/packages/rubygem-asciidoctor/0.1.4/1.fc19/src/rubygem-asciidoctor-0.1.4-1.fc19.src.rpm
- rpmbuild --rebuild srpms/rubygem-asciidoctor-0.1.4-1.fc19.src.rpm
+ wget -P srpms http://kojipkgs.fedoraproject.org/packages/rubygem-asciidoctor/1.5.2/1.fc21/src/rubygem-asciidoctor-1.5.2-1.fc21.src.rpm
+ rpmbuild --rebuild srpms/rubygem-asciidoctor-1.5.2-1.fc21.src.rpm
 
 The SPRMs are stored with the builds in the http://koji.fedoraproject.org/koji/packageinfo?packageID=15660[koji build system].
 
 === Installing the RPM
 
 There's nothing special about installing this RPM.
-I recommend using +yum+ because it will install any dependencies that the package requires (though you should already have them if you built the RPM).
+I recommend using `yum` because it will install any dependencies that the package requires (though you should already have them if you built the RPM).
 
- yum localinstall $HOME/rpmbuild/RPMS/noarch/rubygem-asciidoctor-0.1.4.rpm
+ yum install -y $HOME/rpmbuild/RPMS/noarch/rubygem-asciidoctor-1.5.2.rpm
 
 Now, it's time to start using Asciidoctor!
 
 == Test the Asciidoctor RPM and report feedback
 
-Before the Asciidoctor package (+rubygem-asciidoctor+) can be included in the Fedora distribution, it must be tested by users and receive karma via the http://admin.fedoraproject.org/updates[Bohdi system].
+Before the Asciidoctor package (`rubygem-asciidoctor`) can be included in the Fedora distribution, it must be tested by users and receive karma via the http://admin.fedoraproject.org/updates[Bohdi system].
 One way to provide this feedback is to use the http://admin.fedoraproject.org/pkgdb/acls/name/fedora-easy-karma[fedora-easy-karma] tool.
 
 === Enable the updates-testing repository temporarily
 
 In a terminal, type:
 
- sudo yum install rubygem-asciidoctor --enablerepo=updates-testing
+ yum install -y rubygem-asciidoctor --enablerepo=updates-testing
 
 This command will download and install the asciidoctor package.
 
-=== Test the Asciidoctor package: +rubygem-asciidoctor+
+=== Test the Asciidoctor API
 
 First, let's test using Asciidoctor as a Ruby library.
 
-. On your computer, create a new file and name it +asciidoctor-test.rb+ 
+. On your computer, create a new file and name it `asciidoctor-test.rb`
 . Copy and paste the following code into the file:
-
-  require 'asciidoctor'
-  content = "= My First Document\n\nRender me some **HTML**!"
-  puts Asciidoctor.render content, :header_footer => true
++
+[source,ruby]
+----
+require 'asciidoctor'
+content = "= My First Document\n\nRender me some **HTML**!"
+puts Asciidoctor.render content, :header_footer => true
+----
 
 . Save the file.
-. In a terminal, navigate to the directory where you saved +asciidoctor-test.rb+ and type the following command to execute the file with Ruby:
+. In a terminal, navigate to the directory where you saved `asciidoctor-test.rb` and type the following command to execute the file with Ruby:
 
  ruby asciidoctor-test.rb
 +
 You should see this output in your terminal.
-
- <!DOCTYPE html>
- <html lang="en">
- <head>
- <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
- <meta name="generator" content="Asciidoctor 0.1.4">
- <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <title>My First Document</title>
- <link rel="stylesheet" href="./asciidoctor.css">
- </head>
- <body class="article">
- <div id="header">
- <h1>My First Document</h1>
- </div>
- <div id="content">
- <div id="preamble">
- <div class="sectionbody">
- <div class="paragraph">
- <p>Render me some <strong>HTML</strong>!</p>
- </div>
- </div>
- </div>
- </div>
- <div id="footer">
- <div id="footer-text">
- Last updated 2013-09-22 17:35:41 MDT
- </div>
- </div>
- </body>
- </html>
++
+[source,html]
+----
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="Asciidoctor 1.5.2">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My First Document</title>
+<link rel="stylesheet" href="./asciidoctor.css">
+</head>
+<body class="article">
+<div id="header">
+<h1>My First Document</h1>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Render me some <strong>HTML</strong>!</p>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2013-09-22 17:35:41 MDT
+</div>
+</div>
+</body>
+</html>
+----
 
 . You can render the output as HTML using:
 
@@ -156,23 +163,27 @@ You should see this output in your terminal.
 +
 A new tab should open in your current browser session.
 
-Now let's test using the Asciidoctor executable.
+=== Test the Asciidoctor CLI
 
-. On your computer, create a new file and name it +test.ad+ 
+Now let's test using the Asciidoctor executable (i.e., CLI).
+
+. On your computer, create a new file and name it [path]_test.adoc_
 . Copy and paste the following markup into the file:
++
+----
+= My Second Document
+Your Name
 
- = My Second Document
- Your Name
-
- AsciiDoc is _rockin'_ docs.
+AsciiDoc is _rockin'_ docs.
+----
 
 . Save the file
-. In a terminal, navigate to the directory where you saved +test.ad+ and type the following command to run it through the Asciidoctor processor:
+. In a terminal, navigate to the directory where you saved [path]_test.adoc_ and type the following command to run it through the Asciidoctor processor:
 
- asciidoctor test.ad
+ asciidoctor test.adoc
 +
 You shouldn't see any output in your terminal.
-That's because it writes the output to the file +test.html+.
+That's because it writes the output to the file `test.html`.
 
 . Open your browser to see the result.
 . Alternatively, if you're using Gnome, type:
@@ -185,19 +196,21 @@ A new tab should open in your current browser session.
 
 . If you don't have fedora-easy-karma installed on your computer, type the following command in a terminal.
 
- sudo yum install fedora-easy-karma
+ yum install -y fedora-easy-karma
 
 . Once fedora-easy-karma is installed, run it in the terminal.
 
  fedora-easy-karma --fas-username <yourFASaccount> *asciidoctor
 +
+--
 To be on the safe side, include the flag for your FAS account when you start fedora-easy-karma.
 Once fedora-easy-karma runs, you will not be able to switch accounts.
-+
+
 NOTE: It may take fedora-easy-karma several minutes to fetch the list of packages in updates-testing.
-+
-When fedora-easy-karma finds +rubygem-asciidoctor+, it will display a summary of the package and prompt you to give -1 (negative), 0 (neutral), or 1 (postive) karma to the package.
+
+When fedora-easy-karma finds `rubygem-asciidoctor`, it will display a summary of the package and prompt you to give -1 (negative), 0 (neutral), or 1 (postive) karma to the package.
 For more information about providing karma for packages and how to comment on packages, review the http://fedoraproject.org/wiki/QA:Update_feedback_guidelines[Fedora feedback guidelines].
+--
 
 . Enter your karma rating.
 . Next, you will be asked to provide additional, detailed feedback.
