@@ -22,13 +22,17 @@ BuildRequires: ruby(abi) = 1.8
 %endif
 BuildRequires: rubygems-devel
 BuildRequires: ruby(rubygems)
+%if 0%{?el6} || 0%{?el7}
+# Dependencies aren't available on EPEL
+%else
 BuildRequires: rubygem(coderay)
 BuildRequires: rubygem(erubis)
+BuildRequires: rubygem(haml)
 BuildRequires: rubygem(minitest)
 BuildRequires: rubygem(nokogiri)
-BuildRequires: rubygem(tilt)
-BuildRequires: rubygem(haml)
 BuildRequires: rubygem(slim)
+BuildRequires: rubygem(tilt)
+%endif
 BuildArch: noarch
 Provides: asciidoctor = %{version}
 %if 0%{?fc19} || 0%{?fc20} || 0%{?el6} || 0%{?el7}
@@ -76,7 +80,11 @@ gem build %{gem_name}.gemspec
 %gem_install -n %{gem_name}-%{version}%{pre}.gem
 
 %check
+%if 0%{?el6} || 0%{?el7}
+# Asciidoctor tests require Minitest 5, so we can't run them on EPEL
+%else
 LANG=en_US.utf8 ruby -I"lib:test" test/*_test.rb
+%endif
 
 %install
 mkdir -p %{buildroot}%{gem_dir}
