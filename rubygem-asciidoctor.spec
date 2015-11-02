@@ -5,13 +5,13 @@
 
 Summary: A fast, open source AsciiDoc implementation in Ruby
 Name: rubygem-%{gem_name}
-Version: 1.5.2
-Release: 2%{?dist}
+Version: 1.5.3
+Release: 1%{?dist}
 Group: Development/Languages
 License: MIT
 URL: https://github.com/asciidoctor/asciidoctor
 Source0: https://rubygems.org/gems/%{gem_name}-%{version}%{pre}.gem
-%if 0%{?fc19} || 0%{?fc20} || 0%{?el7}
+%if 0%{?el7}
 Requires: ruby(release)
 BuildRequires: ruby(release)
 %endif
@@ -35,7 +35,7 @@ BuildRequires: rubygem(tilt)
 %endif
 BuildArch: noarch
 Provides: asciidoctor = %{version}
-%if 0%{?fc19} || 0%{?fc20} || 0%{?el6} || 0%{?el7}
+%if 0%{?el6} || 0%{?el7}
 Provides: rubygem(%{gem_name}) = %{version}
 %endif
 
@@ -126,6 +126,10 @@ cp -pa .%{gem_instdir}/compat/* \
 %doc %{gem_docdir}
 
 %changelog
+* Mon Nov 02 2015 Ken Dreyer <ktdreyer@ktdreyer.com> - 1.5.3-1
+- Update to Asciidoctor 1.5.3 (rhbz#1276851)
+- Drop Fedora 19 and 20 macros (these distros are EOL)
+
 * Thu Jun 18 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.5.2-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_23_Mass_Rebuild
 
