@@ -5,7 +5,7 @@
 
 Summary: A fast, open source AsciiDoc implementation in Ruby
 Name: rubygem-%{gem_name}
-Version: 1.5.3
+Version: 1.5.4
 Release: 1%{?dist}
 Group: Development/Languages
 License: MIT
@@ -88,44 +88,45 @@ LANG=en_US.utf8 ruby -I"lib:test" test/*_test.rb
 
 %install
 mkdir -p %{buildroot}%{gem_dir}
-cp -pa .%{gem_dir}/* \
-        %{buildroot}%{gem_dir}/
+cp -a .%{gem_dir}/* \
+       %{buildroot}%{gem_dir}/
 
 mkdir -p %{buildroot}%{_bindir}
-cp -pa .%{_bindir}/* \
-        %{buildroot}%{_bindir}/
+cp -a .%{_bindir}/* \
+       %{buildroot}%{_bindir}/
 
 mkdir -p %{buildroot}%{mandir}
-cp -pa .%{gem_instdir}/man/*.1 \
-        %{buildroot}%{mandir}/
-
-mkdir -p %{buildroot}%{_sysconfdir}/%{gem_name}
-cp -pa .%{gem_instdir}/compat/* \
-        %{buildroot}%{_sysconfdir}/%{gem_name}/
+cp -a .%{gem_instdir}/man/*.1 \
+       %{buildroot}%{mandir}/
 
 %files
+%{!?_licensedir:%global license %%doc}
 %dir %{gem_instdir}
 %exclude %{gem_cache}
-%exclude %{gem_instdir}/benchmark
-%exclude %{gem_instdir}/compat
 %exclude %{gem_instdir}/man
 %exclude %{gem_instdir}/test
 %exclude %{gem_instdir}/features
+%license %{gem_instdir}/LICENSE.adoc
 %doc %{gem_instdir}/CHANGELOG.adoc
-%doc %{gem_instdir}/LICENSE.adoc
+%doc %{gem_instdir}/CONTRIBUTING.adoc
 %doc %{gem_instdir}/README.*
 %{gem_instdir}/data
 %{_bindir}/*
 %{gem_instdir}/bin
 %{gem_libdir}
 %{mandir}/*
-%{_sysconfdir}/%{gem_name}/*
 %{gem_spec}
 
 %files doc
 %doc %{gem_docdir}
 
 %changelog
+* Tue Jan 05 2016 Ken Dreyer <ktdreyer@ktdreyer.com> - 1.5.4-1
+- Update to Asciidoctor 1.5.4 (rhbz#1295758)
+- Use %%license macro
+- Drop unnecessary "-p" flag to cp during %%install ("-a" already preserves
+  timestamps)
+
 * Mon Nov 02 2015 Ken Dreyer <ktdreyer@ktdreyer.com> - 1.5.3-1
 - Update to Asciidoctor 1.5.3 (rhbz#1276851)
 - Drop Fedora 19 and 20 macros (these distros are EOL)
