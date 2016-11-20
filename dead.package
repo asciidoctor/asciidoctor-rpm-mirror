@@ -1,0 +1,3 @@
+2016-11-20: Retired because it depends on rubygem-abstract, which was
+retired, because it was orphaned for more than six weeks.
+
