@@ -122,7 +122,7 @@ cp -a .%{gem_instdir}/man/*.1 \
 %doc %{gem_docdir}
 
 %changelog
-* Fri Oct 14 2016 Fabio Alessandro Locati <fale@redhat.com> - 1.5.5-1
+* Fri Oct 14 2016 Fabio Alessandro Locati <fale@fedoraproject.org> - 1.5.5-1
 - Update to Asciidoctor 1.5.5
 
 * Thu Feb 04 2016 Fedora Release Engineering <releng@fedoraproject.org> - 1.5.4-2
