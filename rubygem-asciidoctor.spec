@@ -11,6 +11,11 @@ Group: Development/Languages
 License: MIT
 URL: https://github.com/asciidoctor/asciidoctor
 Source0: https://rubygems.org/gems/%{gem_name}-%{version}%{pre}.gem
+# Parts of the test suite are missing from the package by accident.
+# https://github.com/asciidoctor/asciidoctor/pull/1952
+# git clone https://github.com/asciidoctor/asciidoctor.git && cd asciidoctor
+# git checkout v1.5.5 && tar czvf asciidoctor-1.5.5-tests.tgz test/fixtures test/test_helper.rb
+Source1: %{gem_name}-%{version}-tests.tgz
 %if 0%{?el7}
 Requires: ruby(release)
 BuildRequires: ruby(release)
@@ -71,21 +76,20 @@ gem spec %{SOURCE0} -l --ruby > %{gem_name}.gemspec
 sed -i -e 's|#!/usr/bin/env ruby|#!/usr/bin/ruby|' \
   bin/%{gem_name} bin/%{gem_name}-safe
 
-# Clean up development-only file
-rm Rakefile
-sed -i "s|\"Rakefile\",||g" %{gem_name}.gemspec
-
 %build
 gem build %{gem_name}.gemspec
 %gem_install -n %{gem_name}-%{version}%{pre}.gem
 
 %check
+pushd .%{gem_instdir}
+tar xzvf %{SOURCE1}
+
 %if 0%{?el6} || 0%{?el7}
 # Asciidoctor tests require Minitest 5, so we can't run them on EPEL
 %else
-# We need many more packages to run the tests. I'll try to work on those deps
-# LANG=en_US.utf8 ruby -I"lib:test" test/*_test.rb
+LANG=en_US.utf8 ruby -I"lib:test" test/*_test.rb
 %endif
+popd
 
 %install
 mkdir -p %{buildroot}%{gem_dir}
@@ -104,13 +108,19 @@ cp -a .%{gem_instdir}/man/*.1 \
 %{!?_licensedir:%global license %%doc}
 %dir %{gem_instdir}
 %exclude %{gem_cache}
+%exclude %{gem_instdir}/asciidoctor.gemspec
 %exclude %{gem_instdir}/man
 %exclude %{gem_instdir}/test
 %exclude %{gem_instdir}/features
+%exclude %{gem_instdir}/Gemfile
+%exclude %{gem_instdir}/Rakefile
 %license %{gem_instdir}/LICENSE.adoc
 %doc %{gem_instdir}/CHANGELOG.adoc
 %doc %{gem_instdir}/CONTRIBUTING.adoc
 %doc %{gem_instdir}/README.*
+%lang(fr) %doc %{gem_instdir}/README-fr.*
+%lang(ja) %doc %{gem_instdir}/README-jp.*
+%lang(zh_CN) %doc %{gem_instdir}/README-zh_CN.*
 %{gem_instdir}/data
 %{_bindir}/*
 %{gem_instdir}/bin
@@ -122,6 +132,9 @@ cp -a .%{gem_instdir}/man/*.1 \
 %doc %{gem_docdir}
 
 %changelog
+* Mon Jun 05 2017 Vít Ondruch <vondruch@redhat.com> - 1.5.5-2
+- Fix FTBFS.
+
 * Sat Feb 11 2017 Fedora Release Engineering <releng@fedoraproject.org> - 1.5.5-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_26_Mass_Rebuild
 
