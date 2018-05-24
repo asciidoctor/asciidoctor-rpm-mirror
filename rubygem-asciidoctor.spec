@@ -6,7 +6,7 @@
 Summary: A fast, open source AsciiDoc implementation in Ruby
 Name: rubygem-%{gem_name}
 Version: 1.5.6.1
-Release: 2%{?dist}
+Release: 3%{?dist}
 Group: Development/Languages
 License: MIT
 URL: https://github.com/asciidoctor/asciidoctor
@@ -36,6 +36,7 @@ BuildRequires: rubygem(minitest)
 BuildRequires: rubygem(nokogiri)
 BuildRequires: rubygem(slim)
 BuildRequires: rubygem(tilt)
+BuildRequires: rubygem(thread_safe)
 %endif
 BuildArch: noarch
 Provides: asciidoctor = %{version}
@@ -85,7 +86,13 @@ pushd .%{gem_instdir}
 %if 0%{?el6} || 0%{?el7}
 # Asciidoctor tests require Minitest 5, so we can't run them on EPEL
 %else
-LANG=en_US.utf8 ruby -I"lib:test" test/*_test.rb
+sed -i "/test 'should convert asciimath macro content to MathML when asciimath gem is available' do/a \\
+        skip('asciimath gem is not avaiable on Fedora')" test/substitutions_test.rb
+
+sed -i "/should render asciimath block in textobject of equation in DocBook backend/a \\
+      skip('asciimath gem is not avaiable on Fedora')" test/blocks_test.rb
+
+LANG=en_US.utf8 ruby -I"lib:test" -e 'Dir.glob "./test/**/*_test.rb", &method(:require)'
 %endif
 popd
 
@@ -130,6 +137,9 @@ cp -a .%{gem_instdir}/man/*.1 \
 %doc %{gem_docdir}
 
 %changelog
+* Wed May 23 2018 Vít Ondruch <vondruch@redhat.com> - 1.5.6.1-3
+- Enable entire test suite.
+
 * Fri Feb 09 2018 Fedora Release Engineering <releng@fedoraproject.org> - 1.5.6.1-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_28_Mass_Rebuild
 
