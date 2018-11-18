@@ -6,7 +6,7 @@
 Summary: A fast, open source AsciiDoc implementation in Ruby
 Name: rubygem-%{gem_name}
 Version: 1.5.6.1
-Release: 4%{?dist}
+Release: 5%{?dist}
 Group: Development/Languages
 License: MIT
 URL: https://github.com/asciidoctor/asciidoctor
@@ -92,7 +92,7 @@ sed -i "/test 'should convert asciimath macro content to MathML when asciimath g
 sed -i "/should render asciimath block in textobject of equation in DocBook backend/a \\
       skip('asciimath gem is not avaiable on Fedora')" test/blocks_test.rb
 
-LANG=en_US.utf8 ruby -I"lib:test" -e 'Dir.glob "./test/**/*_test.rb", &method(:require)'
+LANG=C.UTF-8 ruby -I"lib:test" -e 'Dir.glob "./test/**/*_test.rb", &method(:require)'
 %endif
 popd
 
@@ -137,6 +137,10 @@ cp -a .%{gem_instdir}/man/*.1 \
 %doc %{gem_docdir}
 
 %changelog
+* Sun Nov 18 2018 Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl> - 1.5.6.1-5
+- Use C.UTF-8 locale
+  See https://fedoraproject.org/wiki/Changes/Remove_glibc-langpacks-all_from_buildroot
+
 * Sat Jul 14 2018 Fedora Release Engineering <releng@fedoraproject.org> - 1.5.6.1-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_29_Mass_Rebuild
 
