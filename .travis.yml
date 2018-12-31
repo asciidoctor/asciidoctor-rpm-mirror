@@ -1,0 +1,10 @@
+dist: trusty
+language: minimal
+conditions: v1
+git:
+  depth: false
+jobs:
+  include:
+  - stage: mirror
+    if: repo = asciidoctor/asciidoctor-rpm-mirror AND branch = mirror
+    script: ./mirror.sh
