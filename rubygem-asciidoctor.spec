@@ -10,10 +10,6 @@ Release: 6%{?dist}
 License: MIT
 URL: https://github.com/asciidoctor/asciidoctor
 Source0: https://rubygems.org/gems/%{gem_name}-%{version}%{pre}.gem
-# Parts of the test suite are missing from the package by accident.
-# https://github.com/asciidoctor/asciidoctor/pull/1952
-# git clone https://github.com/asciidoctor/asciidoctor.git && cd asciidoctor
-# git checkout v1.5.5 && tar czvf asciidoctor-1.5.5-tests.tgz test/fixtures test/test_helper.rb
 %if 0%{?el7}
 Requires: ruby(release)
 BuildRequires: ruby(release)
