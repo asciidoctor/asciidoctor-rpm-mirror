@@ -81,10 +81,10 @@ pushd .%{gem_instdir}
 # Asciidoctor tests require Minitest 5, so we can't run them on EPEL
 %else
 sed -i "/test 'should convert asciimath macro content to MathML when asciimath gem is available' do/a \\
-        skip('asciimath gem is not avaiable on Fedora')" test/substitutions_test.rb
+        skip('asciimath gem is not available on Fedora')" test/substitutions_test.rb
 
 sed -i "/should render asciimath block in textobject of equation in DocBook backend/a \\
-      skip('asciimath gem is not avaiable on Fedora')" test/blocks_test.rb
+      skip('asciimath gem is not available on Fedora')" test/blocks_test.rb
 
 LANG=C.UTF-8 ruby -I"lib:test" -e 'Dir.glob "./test/**/*_test.rb", &method(:require)'
 %endif
