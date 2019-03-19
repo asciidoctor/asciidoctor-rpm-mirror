@@ -5,8 +5,8 @@
 
 Summary: A fast, open source AsciiDoc implementation in Ruby
 Name: rubygem-%{gem_name}
-Version: 1.5.6.1
-Release: 6%{?dist}
+Version: 1.5.8
+Release: 1%{?dist}
 License: MIT
 URL: https://github.com/asciidoctor/asciidoctor
 Source0: https://rubygems.org/gems/%{gem_name}-%{version}%{pre}.gem
@@ -25,13 +25,13 @@ BuildRequires: ruby(rubygems)
 # Dependencies aren't available on EPEL
 %else
 BuildRequires: rubygem(coderay)
+BuildRequires: rubygem(concurrent-ruby)
 BuildRequires: rubygem(erubis)
 BuildRequires: rubygem(haml)
 BuildRequires: rubygem(minitest)
 BuildRequires: rubygem(nokogiri)
 BuildRequires: rubygem(slim)
 BuildRequires: rubygem(tilt)
-BuildRequires: rubygem(thread_safe)
 %endif
 BuildArch: noarch
 Provides: asciidoctor = %{version}
@@ -113,10 +113,11 @@ cp -a .%{gem_instdir}/man/*.1 \
 %exclude %{gem_instdir}/features
 %exclude %{gem_instdir}/Gemfile
 %exclude %{gem_instdir}/Rakefile
-%license %{gem_instdir}/LICENSE.adoc
+%license %{gem_instdir}/LICENSE
 %doc %{gem_instdir}/CHANGELOG.adoc
 %doc %{gem_instdir}/CONTRIBUTING.adoc
 %doc %{gem_instdir}/README.*
+%lang(de) %doc %{gem_instdir}/README-de.*
 %lang(fr) %doc %{gem_instdir}/README-fr.*
 %lang(ja) %doc %{gem_instdir}/README-jp.*
 %lang(zh_CN) %doc %{gem_instdir}/README-zh_CN.*
@@ -131,6 +132,9 @@ cp -a .%{gem_instdir}/man/*.1 \
 %doc %{gem_docdir}
 
 %changelog
+* Tue Mar 19 2019 Todd Zullinger <tmz@pobox.com> - 1.5.8-1
+- Update to Asciidoctor 1.5.8 (resolves CVE-2018-18385)
+
 * Sat Feb 02 2019 Fedora Release Engineering <releng@fedoraproject.org> - 1.5.6.1-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_30_Mass_Rebuild
 
