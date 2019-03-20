@@ -1,0 +1,7 @@
+from Config import *
+
+# the dictionary is a bit limited
+addFilter("rubygem-asciidoctor\..*: W: spelling-error %description -l en_US toolchain")
+
+# the asciidoctor-safe command is removed upstream for the next major release
+addFilter("rubygem-asciidoctor\..*: W: no-manual-page-for-binary asciidoctor-safe")
