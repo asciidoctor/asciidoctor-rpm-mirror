@@ -1,5 +1,5 @@
-/*.gem
 /*.rpm
+/*.tar.gz
 /.build*.log
 /asciidoctor-*/
 /results_*/

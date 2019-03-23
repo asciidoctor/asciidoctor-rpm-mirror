@@ -2,14 +2,15 @@
 %global mandir %{_mandir}/man1
 
 %define pre %nil
+%global gittag v%{version}%{pre}
 
 Summary: A fast, open source AsciiDoc implementation in Ruby
 Name: rubygem-%{gem_name}
-Version: 1.5.8
-Release: 2%{?dist}
+Version: 2.0.10
+Release: 1%{?dist}
 License: MIT
-URL: https://github.com/asciidoctor/asciidoctor
-Source0: https://rubygems.org/gems/%{gem_name}-%{version}%{pre}.gem
+URL: https://asciidoctor.org
+Source0: https://github.com/asciidoctor/asciidoctor/archive/%{gittag}/%{gem_name}-%{version}%{pre}.tar.gz
 %if 0%{?el7}
 Requires: ruby(release)
 BuildRequires: ruby(release)
@@ -30,6 +31,7 @@ BuildRequires: rubygem(erubis)
 BuildRequires: rubygem(haml)
 BuildRequires: rubygem(minitest)
 BuildRequires: rubygem(nokogiri)
+BuildRequires: rubygem(rouge)
 BuildRequires: rubygem(slim)
 BuildRequires: rubygem(tilt)
 %endif
@@ -62,13 +64,13 @@ BuildArch: noarch
 Documentation for %{name}
 
 %prep
-gem unpack -V %{SOURCE0}
-%setup -q -D -T -n %{gem_name}-%{version}%{pre}
-gem spec %{SOURCE0} -l --ruby > %{gem_name}.gemspec
+%autosetup -n %{gem_name}-%{version}%{pre} -p1
+
+# Include tests in the gem, they're disabled by default
+sed -i -e 's/#\(s\.test_files\)/\1/' %{gem_name}.gemspec
 
 # Fix shebang (avoid Requires: /usr/bin/env)
-sed -i -e 's|#!/usr/bin/env ruby|#!/usr/bin/ruby|' \
-  bin/%{gem_name} bin/%{gem_name}-safe
+sed -i -e 's|#!/usr/bin/env ruby|#!/usr/bin/ruby|' bin/%{gem_name}
 
 %build
 gem build %{gem_name}.gemspec
@@ -80,12 +82,6 @@ pushd .%{gem_instdir}
 %if 0%{?el6} || 0%{?el7}
 # Asciidoctor tests require Minitest 5, so we can't run them on EPEL
 %else
-sed -i "/test 'should convert asciimath macro content to MathML when asciimath gem is available' do/a \\
-        skip('asciimath gem is not available on Fedora')" test/substitutions_test.rb
-
-sed -i "/should render asciimath block in textobject of equation in DocBook backend/a \\
-      skip('asciimath gem is not available on Fedora')" test/blocks_test.rb
-
 LANG=C.UTF-8 ruby -I"lib:test" -e 'Dir.glob "./test/**/*_test.rb", &method(:require)'
 %endif
 popd
@@ -111,11 +107,8 @@ cp -a .%{gem_instdir}/man/*.1 \
 %exclude %{gem_instdir}/man
 %exclude %{gem_instdir}/test
 %exclude %{gem_instdir}/features
-%exclude %{gem_instdir}/Gemfile
-%exclude %{gem_instdir}/Rakefile
 %license %{gem_instdir}/LICENSE
 %doc %{gem_instdir}/CHANGELOG.adoc
-%doc %{gem_instdir}/CONTRIBUTING.adoc
 %doc %{gem_instdir}/README.*
 %lang(de) %doc %{gem_instdir}/README-de.*
 %lang(fr) %doc %{gem_instdir}/README-fr.*
@@ -132,6 +125,9 @@ cp -a .%{gem_instdir}/man/*.1 \
 %doc %{gem_docdir}
 
 %changelog
+* Sun Sep 22 2019 Todd Zullinger <tmz@pobox.com> - 2.0.10-1
+- Update to Asciidoctor 2.0.10
+
 * Fri Jul 26 2019 Fedora Release Engineering <releng@fedoraproject.org> - 1.5.8-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_31_Mass_Rebuild
 
