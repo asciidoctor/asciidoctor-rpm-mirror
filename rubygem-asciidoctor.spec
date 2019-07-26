@@ -6,7 +6,7 @@
 Summary: A fast, open source AsciiDoc implementation in Ruby
 Name: rubygem-%{gem_name}
 Version: 1.5.8
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: MIT
 URL: https://github.com/asciidoctor/asciidoctor
 Source0: https://rubygems.org/gems/%{gem_name}-%{version}%{pre}.gem
@@ -132,6 +132,9 @@ cp -a .%{gem_instdir}/man/*.1 \
 %doc %{gem_docdir}
 
 %changelog
+* Fri Jul 26 2019 Fedora Release Engineering <releng@fedoraproject.org> - 1.5.8-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_31_Mass_Rebuild
+
 * Tue Mar 19 2019 Todd Zullinger <tmz@pobox.com> - 1.5.8-1
 - Update to Asciidoctor 1.5.8 (resolves CVE-2018-18385)
 
