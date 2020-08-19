@@ -1,0 +1,108 @@
+From 11bffe004018c584b3169658bccd0d4cc31cbdcc Mon Sep 17 00:00:00 2001
+From: Dan Allen <dan.j.allen@gmail.com>
+Date: Wed, 19 Aug 2020 18:04:10 -0600
+Subject: [PATCH] resolves #3737 add support for erubi template engine; use it
+ in place of erubis in test suite
+
+---
+ asciidoctor.gemspec                   |  4 ++--
+ lib/asciidoctor/cli/options.rb        |  4 ++--
+ lib/asciidoctor/converter/template.rb |  3 +++
+ test/converter_test.rb                | 11 +++++------
+ test/invoker_test.rb                  |  4 ++--
+ 5 files changed, 14 insertions(+), 12 deletions(-)
+
+diff --git a/asciidoctor.gemspec b/asciidoctor.gemspec
+index d0c51b37e..4af042fd4 100644
+--- a/asciidoctor.gemspec
++++ b/asciidoctor.gemspec
+@@ -40,8 +40,8 @@ Gem::Specification.new do |s|
+   # concurrent-ruby, haml, slim, and tilt are needed for testing custom templates
+   s.add_development_dependency 'concurrent-ruby', '~> 1.1.0'
+   s.add_development_dependency 'cucumber', '~> 3.1.0'
+-  # erubis is needed for testing alternate eRuby impls
+-  s.add_development_dependency 'erubis', '~> 2.7.0'
++  # erubi is needed for testing alternate eRuby impls
++  s.add_development_dependency 'erubi', '~> 1.9.0'
+   s.add_development_dependency 'haml', '~> 5.0.0'
+   s.add_development_dependency 'minitest', '~> 5.11.0'
+   s.add_development_dependency 'nokogiri', '~> 1.10.0'
+diff --git a/lib/asciidoctor/cli/options.rb b/lib/asciidoctor/cli/options.rb
+index db2b4b3d8..41e055f4c 100644
+--- a/lib/asciidoctor/cli/options.rb
++++ b/lib/asciidoctor/cli/options.rb
+@@ -76,8 +76,8 @@ def parse!(args)
+           opts.on('-n', '--section-numbers', 'auto-number section titles in the HTML backend; disabled by default') do
+             self[:attributes]['sectnums'] = ''
+           end
+-          opts.on('--eruby ERUBY', ['erb', 'erubis'],
+-                  'specify eRuby implementation to use when rendering custom ERB templates: [erb, erubis] (default: erb)') do |eruby|
++          opts.on('--eruby ERUBY', ['erb', 'erubi', 'erubis'],
++                  'specify eRuby implementation to use when rendering custom ERB templates: [erb, erubi, erubis] (default: erb)') do |eruby|
+             self[:eruby] = eruby
+           end
+           opts.on('-a', '--attribute name[=value]', 'a document attribute to set in the form of name, name!, or name=value pair',
+diff --git a/lib/asciidoctor/converter/template.rb b/lib/asciidoctor/converter/template.rb
+index f215c5e5b..9f6265b55 100644
+--- a/lib/asciidoctor/converter/template.rb
++++ b/lib/asciidoctor/converter/template.rb
+@@ -257,6 +257,9 @@ def load_eruby name
+     if !name || name == 'erb'
+       require 'erb' unless defined? ::ERB.version
+       [::Tilt::ERBTemplate, {}]
++    elsif name == 'erubi'
++      Helpers.require_library 'erubi' unless defined? ::Erubis::Engine
++      [::Tilt::ErubiTemplate, {}]
+     elsif name == 'erubis'
+       Helpers.require_library 'erubis' unless defined? ::Erubis::FastEruby
+       [::Tilt::ErubisTemplate, { engine_class: ::Erubis::FastEruby }]
+diff --git a/test/converter_test.rb b/test/converter_test.rb
+index 1d23c79e8..cf227db8d 100644
+--- a/test/converter_test.rb
++++ b/test/converter_test.rb
+@@ -241,7 +241,7 @@
+         assert_kind_of Asciidoctor::Converter::TemplateConverter, selected
+         template = selected.templates[node_name]
+         assert_kind_of Tilt::ERBTemplate, template
+-        refute_kind_of Tilt::ErubisTemplate, template
++        refute_kind_of Tilt::ErubiTemplate, template
+         assert_kind_of ::ERB, template.instance_variable_get('@engine')
+         assert_equal %(block_#{node_name}.html.erb), File.basename(selected.templates[node_name].file)
+       end
+@@ -258,16 +258,15 @@
+       assert_equal expected_output, doc.convert
+     end
+ 
+-    test 'should load ERB templates using ErubisTemplate if eruby is set to erubis' do
+-      doc = Asciidoctor::Document.new [], template_dir: (fixture_path 'custom-backends/erb'), template_cache: false, eruby: 'erubis'
++    test 'should load ERB templates using ErubiTemplate if eruby is set to erubi' do
++      doc = Asciidoctor::Document.new [], template_dir: (fixture_path 'custom-backends/erb'), template_cache: false, eruby: 'erubi'
+       assert_kind_of Asciidoctor::Converter::CompositeConverter, doc.converter
+       %w(paragraph).each do |node_name|
+         selected = doc.converter.find_converter node_name
+         assert_kind_of Asciidoctor::Converter::TemplateConverter, selected
+         template = selected.templates[node_name]
+-        assert_kind_of Tilt::ERBTemplate, template
+-        assert_kind_of Tilt::ErubisTemplate, template
+-        assert_kind_of ::Erubis::FastEruby, template.instance_variable_get('@engine')
++        assert_kind_of Tilt::ErubiTemplate, template
++        assert_kind_of ::Erubi::Engine, template.instance_variable_get('@engine')
+         assert_equal %(block_#{node_name}.html.erb), File.basename(selected.templates[node_name].file)
+       end
+     end
+diff --git a/test/invoker_test.rb b/test/invoker_test.rb
+index 079781e7f..c1c8d1baf 100644
+--- a/test/invoker_test.rb
++++ b/test/invoker_test.rb
+@@ -673,9 +673,9 @@
+   end
+ 
+   test 'should set eRuby impl if specified' do
+-    invoker = invoke_cli_to_buffer %w(--eruby erubis -o /dev/null)
++    invoker = invoke_cli_to_buffer %w(--eruby erubi -o /dev/null)
+     doc = invoker.document
+-    assert_equal 'erubis', doc.instance_variable_get('@options')[:eruby]
++    assert_equal 'erubi', doc.instance_variable_get('@options')[:eruby]
+   end
+ 
+   test 'should force default external encoding to UTF-8' do
