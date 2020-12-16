@@ -6,14 +6,14 @@
 
 Summary: A fast, open source AsciiDoc implementation in Ruby
 Name: rubygem-%{gem_name}
-Version: 2.0.10
-Release: 5%{?dist}
+Version: 2.0.12
+Release: 1%{?dist}
 License: MIT
 URL: https://asciidoctor.org
 Source0: https://github.com/asciidoctor/asciidoctor/archive/%{gittag}/%{gem_name}-%{version}%{pre}.tar.gz
-# Add support for erubi template engine; use it in place of erubis in test suite.
-# https://github.com/asciidoctor/asciidoctor/pull/3738
-Patch0: rubygem-asciidoctor-2.0.11-add-support-for-erubi-template-engine.patch
+# Fix test failure
+# https://github.com/asciidoctor/asciidoctor/issues/3916
+Patch0: https://github.com/asciidoctor/asciidoctor/commit/62014851b.patch#/0001-resolves-3916-upgrade-rouge-and-fix-test-assertion-P.patch
 %if 0%{?el7}
 Requires: ruby(release)
 BuildRequires: ruby(release)
@@ -128,6 +128,10 @@ cp -a .%{gem_instdir}/man/*.1 \
 %doc %{gem_docdir}
 
 %changelog
+* Wed Jan 27 2021 Pavel Valena <pvalena@redhat.com> - 2.0.12-1
+- Update to asciidoctor 2.0.12.
+  Resolves: rhbz#1893940
+
 * Wed Jan 27 2021 Fedora Release Engineering <releng@fedoraproject.org> - 2.0.10-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_34_Mass_Rebuild
 

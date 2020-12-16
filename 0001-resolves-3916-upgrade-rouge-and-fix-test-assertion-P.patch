@@ -1,0 +1,37 @@
+From 62014851b087071339d19b5313e5676766aabe90 Mon Sep 17 00:00:00 2001
+From: Dan Allen <dan.j.allen@gmail.com>
+Date: Fri, 22 Jan 2021 03:18:10 -0700
+Subject: [PATCH] resolves #3916 upgrade rouge and fix test assertion (PR
+ #3920)
+
+---
+ asciidoctor.gemspec             | 2 +-
+ test/syntax_highlighter_test.rb | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/asciidoctor.gemspec b/asciidoctor.gemspec
+index 66d70eb25..d12c24614 100644
+--- a/asciidoctor.gemspec
++++ b/asciidoctor.gemspec
+@@ -47,7 +47,7 @@ Gem::Specification.new do |s|
+   s.add_development_dependency 'nokogiri', '~> 1.10.0'
+   s.add_development_dependency 'rake', '~> 12.3.0'
+   # Asciidoctor supports Rouge >= 2
+-  s.add_development_dependency 'rouge', '~> 3.15.0'
++  s.add_development_dependency 'rouge', '~> 3.26.0'
+   s.add_development_dependency 'rspec-expectations', '~> 3.8.0'
+   s.add_development_dependency 'slim', '~> 4.0.0'
+   s.add_development_dependency 'tilt', '~> 2.0.0'
+diff --git a/test/syntax_highlighter_test.rb b/test/syntax_highlighter_test.rb
+index 0a96ee96b..7b8502b1e 100644
+--- a/test/syntax_highlighter_test.rb
++++ b/test/syntax_highlighter_test.rb
+@@ -758,7 +758,7 @@ def highlight?
+       output = convert_string_to_embedded input, safe: :safe, attributes: { 'source-highlighter' => 'rouge' }
+       assert_css 'pre.rouge > code[data-lang="php"]', output, 1
+       # if class is "nb", then the funcnamehighlighting option is not honored
+-      assert_include '<span class="nx">cal_days_in_month</span>', output
++      refute_include '<span class="nb">cal_days_in_month</span>', output
+       assert_include '<span class="mi">2019</span>', output
+     end
+
