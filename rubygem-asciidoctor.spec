@@ -25,7 +25,7 @@ BuildRequires: ruby(abi) = 1.8
 %endif
 BuildRequires: rubygems-devel
 BuildRequires: ruby(rubygems)
-%if 0%{?el6} || 0%{?el7}
+%if 0%{?rhel}
 # Dependencies aren't available on EPEL
 %else
 BuildRequires: rubygem(coderay)
@@ -82,7 +82,7 @@ gem build %{gem_name}.gemspec
 %check
 pushd .%{gem_instdir}
 
-%if 0%{?el6} || 0%{?el7}
+%if 0%{?rhel}
 # Asciidoctor tests require Minitest 5, so we can't run them on EPEL
 %else
 LANG=C.UTF-8 ruby -I"lib:test" -e 'Dir.glob "./test/**/*_test.rb", &method(:require)'
