@@ -7,7 +7,7 @@
 Summary: A fast, open source AsciiDoc implementation in Ruby
 Name: rubygem-%{gem_name}
 Version: 2.0.10
-Release: 4%{?dist}
+Release: 5%{?dist}
 License: MIT
 URL: https://asciidoctor.org
 Source0: https://github.com/asciidoctor/asciidoctor/archive/%{gittag}/%{gem_name}-%{version}%{pre}.tar.gz
@@ -128,6 +128,9 @@ cp -a .%{gem_instdir}/man/*.1 \
 %doc %{gem_docdir}
 
 %changelog
+* Wed Jan 27 2021 Fedora Release Engineering <releng@fedoraproject.org> - 2.0.10-5
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_34_Mass_Rebuild
+
 * Wed Aug 19 2020 Vít Ondruch <vondruch@redhat.com> - 2.0.10-4
 - Replace build time Erubis dependency by Erubi.
 
